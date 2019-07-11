@@ -1,21 +1,22 @@
 package com.example.mapsandcollections.dto;
 
-import java.util.List;
 import java.util.concurrent.Callable;
 
-public class ItemTask {
+public class ItemTask implements Cloneable {
 
     private final String title;
     private final String description;
     private final int position;
     private double result;
-    private Callable task;
-    private List<Object> elements;
+    private Callable<Double> task;
 
-    public ItemTask(int position, String title, String description, Callable task) {
+    private boolean isShowProgressBar;
+
+    ItemTask(int position, String title, String description, Callable<Double> task) {
         this.position = position;
         this.title = title;
         this.description = description;
+        this.task = task;
 
     }
 
@@ -23,7 +24,7 @@ public class ItemTask {
         return result;
     }
 
-    public void setResult(double result) {
+    void setResult(double result) {
         this.result = result;
     }
 
@@ -35,7 +36,20 @@ public class ItemTask {
         return description;
     }
 
-    public void setTask(Callable task) {
-        this.task = task;
+    public boolean isShowProgressBar() {
+        return isShowProgressBar;
+    }
+
+    public void setShowProgressBar(boolean showProgressBar) {
+        isShowProgressBar = showProgressBar;
+    }
+
+    Callable<Double> getTask() {
+        return task;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

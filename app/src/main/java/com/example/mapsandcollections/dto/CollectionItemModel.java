@@ -1,15 +1,19 @@
 package com.example.mapsandcollections.dto;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 
 import com.example.mapsandcollections.components.tasker.ITaskerListener;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-public class ItemTaskModel implements IItemTaskModel {
+public class CollectionItemModel implements IItemTaskModel {
 
 
     private static final String ARRAY_LIST = "ArrayList";
@@ -24,18 +28,36 @@ public class ItemTaskModel implements IItemTaskModel {
     private static final String REMOVE_END = "Remove in the\n end";
     private static final String SEARCH_BY_VALUE = "Search by\n value";
 
-    private List<Object> elements;
+    private List<Object> arrayList;
+    private List<Object> linkedList;
+    private List<Object> copyOnWriteArrayList;
     private final Handler handler;
     private ITaskerListener listener;
+    private List<ItemTask> itemTaskList;
 
-    public ItemTaskModel() {
+    public CollectionItemModel() {
         handler = new Handler(Looper.getMainLooper());
+        createItemModel();
     }
 
 
     @Override
     public List<ItemTask> getItemTasks() {
-        final List<ItemTask> itemTaskList = new ArrayList<>();
+        return itemTaskList;
+    }
+
+
+
+    @Override
+    public void setElements(List<Object> arrayList, List<Object> linkedList, List<Object> copyOnWriteList) {
+        this.arrayList = arrayList;
+        this.linkedList = linkedList;
+        this.copyOnWriteArrayList = copyOnWriteList;
+    }
+
+    private void createItemModel() {
+
+        itemTaskList = new ArrayList<>();
         itemTaskList.add(new ItemTask(
                 0,
                 ARRAY_LIST,
@@ -43,9 +65,10 @@ public class ItemTaskModel implements IItemTaskModel {
                 () -> {
                     double start = System.nanoTime();
                     getElements(ARRAY_LIST).add(0, new Object());
-                    itemTaskList.get(0).setResult(System.nanoTime() - start);
+                    itemTaskList.get(0).setResult((System.nanoTime() - start) / 1_000_000);
+                    itemTaskList.get(0).setShowProgressBar(false);
                     handler.post(() -> listener.onDone(0));
-                    return 0l;
+                    return -1D;
                 }
         ));
         itemTaskList.add(new ItemTask(
@@ -55,9 +78,10 @@ public class ItemTaskModel implements IItemTaskModel {
                 () -> {
                     double start = System.nanoTime();
                     getElements(LINKED_LIST).add(0, new Object());
-                    itemTaskList.get(1).setResult(System.nanoTime() - start);
-                    handler.post(() -> listener.onDone(0));
-                    return 0l;
+                    itemTaskList.get(1).setResult((System.nanoTime() - start) / 1_000_000);
+                    itemTaskList.get(1).setShowProgressBar(false);
+                    handler.post(() -> listener.onDone(1));
+                    return -1D;
                 }
         ));
         itemTaskList.add(new ItemTask(
@@ -67,9 +91,10 @@ public class ItemTaskModel implements IItemTaskModel {
                 () -> {
                     double start = System.nanoTime();
                     getElements(COW_LIST).add(0, new Object());
-                    itemTaskList.get(2).setResult(System.nanoTime() - start);
-                    handler.post(() -> listener.onDone(0));
-                    return 0l;
+                    itemTaskList.get(2).setResult((System.nanoTime() - start) / 1_000_000);
+                    itemTaskList.get(2).setShowProgressBar(false);
+                    handler.post(() -> listener.onDone(2));
+                    return -1D;
                 }
         ));
 
@@ -80,9 +105,10 @@ public class ItemTaskModel implements IItemTaskModel {
                 () -> {
                     double start = System.nanoTime();
                     getElements(ARRAY_LIST).add(getSize() / 2, new Object());
-                    itemTaskList.get(3).setResult(System.nanoTime() - start);
-                    handler.post(() -> listener.onDone(0));
-                    return 0l;
+                    itemTaskList.get(3).setResult((System.nanoTime() - start) / 1_000_000);
+                    itemTaskList.get(3).setShowProgressBar(false);
+                    handler.post(() -> listener.onDone(3));
+                    return -1D;
                 }
         ));
         itemTaskList.add(new ItemTask(
@@ -92,9 +118,10 @@ public class ItemTaskModel implements IItemTaskModel {
                 () -> {
                     double start = System.nanoTime();
                     getElements(ARRAY_LIST).add(getSize() / 2, new Object());
-                    itemTaskList.get(4).setResult(System.nanoTime() - start);
-                    handler.post(() -> listener.onDone(0));
-                    return 0l;
+                    itemTaskList.get(4).setResult((System.nanoTime() - start) / 1_000_000);
+                    itemTaskList.get(4).setShowProgressBar(false);
+                    handler.post(() -> listener.onDone(4));
+                    return -1D;
                 }
         ));
         itemTaskList.add(new ItemTask(
@@ -104,9 +131,10 @@ public class ItemTaskModel implements IItemTaskModel {
                 () -> {
                     double start = System.nanoTime();
                     getElements(ARRAY_LIST).add(getSize() / 2, new Object());
-                    itemTaskList.get(5).setResult(System.nanoTime() - start);
-                    handler.post(() -> listener.onDone(0));
-                    return 0l;
+                    itemTaskList.get(5).setResult((System.nanoTime() - start) / 1_000_000);
+                    itemTaskList.get(5).setShowProgressBar(false);
+                    handler.post(() -> listener.onDone(5));
+                    return -1D;
                 }
         ));
 
@@ -117,9 +145,10 @@ public class ItemTaskModel implements IItemTaskModel {
                 () -> {
                     double start = System.nanoTime();
                     getElements(ARRAY_LIST).add(getSize(), new Object());
-                    itemTaskList.get(6).setResult(System.nanoTime() - start);
-                    handler.post(() -> listener.onDone(0));
-                    return 0l;
+                    itemTaskList.get(6).setResult((System.nanoTime() - start) / 1_000_000);
+                    itemTaskList.get(6).setShowProgressBar(false);
+                    handler.post(() -> listener.onDone(6));
+                    return -1D;
                 }
         ));
         itemTaskList.add(new ItemTask(
@@ -129,9 +158,10 @@ public class ItemTaskModel implements IItemTaskModel {
                 () -> {
                     double start = System.nanoTime();
                     getElements(ARRAY_LIST).add(getSize(), new Object());
-                    itemTaskList.get(7).setResult(System.nanoTime() - start);
-                    handler.post(() -> listener.onDone(0));
-                    return 0l;
+                    itemTaskList.get(7).setResult((System.nanoTime() - start) / 1_000_000);
+                    itemTaskList.get(7).setShowProgressBar(false);
+                    handler.post(() -> listener.onDone(7));
+                    return -1D;
                 }
         ));
         itemTaskList.add(new ItemTask(
@@ -141,9 +171,10 @@ public class ItemTaskModel implements IItemTaskModel {
                 () -> {
                     double start = System.nanoTime();
                     getElements(ARRAY_LIST).add(getSize(), new Object());
-                    itemTaskList.get(8).setResult(System.nanoTime() - start);
-                    handler.post(() -> listener.onDone(0));
-                    return 0l;
+                    itemTaskList.get(8).setResult((System.nanoTime() - start) / 1_000_000);
+                    itemTaskList.get(8).setShowProgressBar(false);
+                    handler.post(() -> listener.onDone(8));
+                    return -1D;
                 }
         ));
 
@@ -154,9 +185,10 @@ public class ItemTaskModel implements IItemTaskModel {
                 () -> {
                     double start = System.nanoTime();
                     getElements(ARRAY_LIST).remove(0);
-                    itemTaskList.get(9).setResult(System.nanoTime() - start);
-                    handler.post(() -> listener.onDone(0));
-                    return 0l;
+                    itemTaskList.get(9).setResult((System.nanoTime() - start) / 1_000_000);
+                    itemTaskList.get(9).setShowProgressBar(false);
+                    handler.post(() -> listener.onDone(9));
+                    return -1D;
                 }
         ));
         itemTaskList.add(new ItemTask(
@@ -166,9 +198,10 @@ public class ItemTaskModel implements IItemTaskModel {
                 () -> {
                     double start = System.nanoTime();
                     getElements(LINKED_LIST).remove(0);
-                    itemTaskList.get(10).setResult(System.nanoTime() - start);
-                    handler.post(() -> listener.onDone(0));
-                    return 0l;
+                    itemTaskList.get(10).setResult((System.nanoTime() - start) / 1_000_000);
+                    itemTaskList.get(10).setShowProgressBar(false);
+                    handler.post(() -> listener.onDone(10));
+                    return -1D;
                 }
         ));
 
@@ -179,9 +212,10 @@ public class ItemTaskModel implements IItemTaskModel {
                 () -> {
                     double start = System.nanoTime();
                     getElements(COW_LIST).remove(0);
-                    itemTaskList.get(11).setResult(System.nanoTime() - start);
-                    handler.post(() -> listener.onDone(0));
-                    return 0l;
+                    itemTaskList.get(11).setResult((System.nanoTime() - start) / 1_000_000);
+                    itemTaskList.get(11).setShowProgressBar(false);
+                    handler.post(() -> listener.onDone(11));
+                    return -1D;
                 }
         ));
 
@@ -192,9 +226,10 @@ public class ItemTaskModel implements IItemTaskModel {
                 () -> {
                     double start = System.nanoTime();
                     getElements(ARRAY_LIST).remove(getSize() / 2);
-                    itemTaskList.get(12).setResult(System.nanoTime() - start);
-                    handler.post(() -> listener.onDone(0));
-                    return 0l;
+                    itemTaskList.get(12).setResult((System.nanoTime() - start) / 1_000_000);
+                    itemTaskList.get(12).setShowProgressBar(false);
+                    handler.post(() -> listener.onDone(12));
+                    return -1D;
                 }
         ));
 
@@ -205,9 +240,10 @@ public class ItemTaskModel implements IItemTaskModel {
                 () -> {
                     double start = System.nanoTime();
                     getElements(LINKED_LIST).remove(getSize() / 2);
-                    itemTaskList.get(13).setResult(System.nanoTime() - start);
-                    handler.post(() -> listener.onDone(0));
-                    return 0l;
+                    itemTaskList.get(13).setResult((System.nanoTime() - start) / 1_000_000);
+                    itemTaskList.get(13).setShowProgressBar(false);
+                    handler.post(() -> listener.onDone(13));
+                    return -1D;
                 }
         ));
         itemTaskList.add(new ItemTask(
@@ -217,9 +253,10 @@ public class ItemTaskModel implements IItemTaskModel {
                 () -> {
                     double start = System.nanoTime();
                     getElements(COW_LIST).remove(getSize() / 2);
-                    itemTaskList.get(14).setResult(System.nanoTime() - start);
-                    handler.post(() -> listener.onDone(0));
-                    return 0l;
+                    itemTaskList.get(14).setResult((System.nanoTime() - start) / 1_000_000);
+                    itemTaskList.get(14).setShowProgressBar(false);
+                    handler.post(() -> listener.onDone(14));
+                    return -1D;
                 }
         ));
 
@@ -230,9 +267,10 @@ public class ItemTaskModel implements IItemTaskModel {
                 () -> {
                     double start = System.nanoTime();
                     getElements(ARRAY_LIST).remove(getSize() - 1);
-                    itemTaskList.get(15).setResult(System.nanoTime() - start);
-                    handler.post(() -> listener.onDone(0));
-                    return 0l;
+                    itemTaskList.get(15).setResult((System.nanoTime() - start) / 1_000_000);
+                    itemTaskList.get(15).setShowProgressBar(false);
+                    handler.post(() -> listener.onDone(15));
+                    return -1D;
                 }
         ));
         itemTaskList.add(new ItemTask(
@@ -242,9 +280,10 @@ public class ItemTaskModel implements IItemTaskModel {
                 () -> {
                     double start = System.nanoTime();
                     getElements(LINKED_LIST).remove(getSize() - 1);
-                    itemTaskList.get(16).setResult(System.nanoTime() - start);
-                    handler.post(() -> listener.onDone(0));
-                    return 0l;
+                    itemTaskList.get(16).setResult((System.nanoTime() - start) / 1_000_000);
+                    itemTaskList.get(16).setShowProgressBar(false);
+                    handler.post(() -> listener.onDone(16));
+                    return -1D;
                 }
         ));
 
@@ -255,9 +294,10 @@ public class ItemTaskModel implements IItemTaskModel {
                 () -> {
                     double start = System.nanoTime();
                     getElements(COW_LIST).remove(getSize() - 1);
-                    itemTaskList.get(17).setResult(System.nanoTime() - start);
-                    handler.post(() -> listener.onDone(0));
-                    return 0l;
+                    itemTaskList.get(17).setResult((System.nanoTime() - start) / 1_000_000);
+                    itemTaskList.get(17).setShowProgressBar(false);
+                    handler.post(() -> listener.onDone(17));
+                    return -1D;
                 }
         ));
 
@@ -272,11 +312,12 @@ public class ItemTaskModel implements IItemTaskModel {
                     for (Object o : getElements(ARRAY_LIST)) {
                         if (suspect == o) {
                             itemTaskList.get(18).setResult((System.nanoTime() - start) / 1_000_000);
+                            itemTaskList.get(18).setShowProgressBar(false);
                             handler.post(() -> listener.onDone(18));
-                            return 0d;
+                            return -1D;
                         }
                     }
-                    return 0d;
+                    return -1D;
                 }
         ));
         itemTaskList.add(new ItemTask(
@@ -290,11 +331,12 @@ public class ItemTaskModel implements IItemTaskModel {
                     for (Object o : getElements(LINKED_LIST)) {
                         if (suspect == o) {
                             itemTaskList.get(19).setResult((System.nanoTime() - start) / 1_000_000);
+                            itemTaskList.get(19).setShowProgressBar(false);
                             handler.post(() -> listener.onDone(19));
-                            return 0d;
+                            return -1D;
                         }
                     }
-                    return 0d;
+                    return -1D;
                 }
 
         ));
@@ -309,15 +351,14 @@ public class ItemTaskModel implements IItemTaskModel {
                     for (Object o : getElements(LINKED_LIST)) {
                         if (suspect == o) {
                             itemTaskList.get(20).setResult((System.nanoTime() - start) / 1_000_000);
+                            itemTaskList.get(20).setShowProgressBar(false);
                             handler.post(() -> listener.onDone(20));
-                            return 0d;
+                            return -1D;
                         }
                     }
-                    return 0d;
+                    return -1D;
                 }
         ));
-
-        return itemTaskList;
     }
 
     private List<Object> getElements(String type) {
@@ -333,23 +374,62 @@ public class ItemTaskModel implements IItemTaskModel {
     }
 
     private List<Object> getCopyOnWriteList() {
-        return null;
+        return copyOnWriteArrayList;
     }
 
     private List<Object> getLinkedList() {
-        return null;
+        return linkedList;
     }
 
     private List<Object> getArrayList() {
-        return null;
+        return arrayList;
     }
 
     private int getSize() {
-        return elements.size();
+        return arrayList.size();
     }
 
-    private void setListener(ITaskerListener listener) {
+    @Override
+    public void setListener(ITaskerListener listener) {
         this.listener = listener;
+    }
+
+    @Override
+    public List<Callable<Double>> getTasks() {
+        List<Callable<Double>> taskList = new ArrayList<>();
+
+        for (ItemTask itemTask : getItemTasks()) {
+            taskList.add(itemTask.getTask());
+        }
+        return taskList;
+    }
+
+    @Override
+    public void createCollections(String elements) {
+        arrayList = getArrayList(elements);
+        linkedList = getLinkedList(elements);
+        copyOnWriteArrayList = getCopyOnWriteList(elements);
+    }
+
+
+    private List<Object> getCopyOnWriteList(String elements) {
+        return generateList(new CopyOnWriteArrayList<>(), elements);
+    }
+
+    private List<Object> getLinkedList(String elements) {
+        return generateList(new LinkedList<>(), elements);
+    }
+
+    private List<Object> getArrayList(String elements) {
+        return generateList(new ArrayList<>(), elements);
+    }
+
+    private List<Object> generateList(List<Object> list, String elements) {
+        final int amount = Integer.parseInt(elements);
+        for (int i = 0; i < amount; i++) {
+            list.add(new Object());
+        }
+        return list;
     }
 }
 

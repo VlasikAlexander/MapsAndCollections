@@ -2,39 +2,38 @@ package com.example.mapsandcollections.ui.fr.collection;
 
 import com.example.mapsandcollections.components.tasker.ITasker;
 import com.example.mapsandcollections.components.tasker.ITaskerListener;
+import com.example.mapsandcollections.dto.IItemTaskModel;
+import com.example.mapsandcollections.dto.ItemTask;
 
 import java.util.List;
 
 public class CollectionPresenter implements CollectionContract.IPresenter, ITaskerListener {
 
-    final private CollectionContract.IView view;
-    private static final String MAPS = "MAPS";
-    private final ITasker tasker;
+    private final CollectionContract.IView view;
 
-    public CollectionPresenter(CollectionContract.IView view, ITasker tasker) {
+    private final ITasker tasker;
+    private final IItemTaskModel taskModel;
+
+    public CollectionPresenter(CollectionContract.IView view, ITasker tasker, IItemTaskModel taskModel) {
         this.view = view;
         this.tasker = tasker;
-        tasker.setListener(this);
-    }
-
-    @Override
-    public void calculate(String threads, String elements) {
-        tasker.launchTasks(MAPS, threads, elements);
-    }
-
-    @Override
-    public void onResult(List<Double> list) {
-        view.updateUI(list);
+        this.taskModel = taskModel;
     }
 
     @Override
     public void onDone(int position) {
-
+        view.updateUI(position);
+        System.out.println("onDome: " + position);
     }
 
     @Override
-    public void onDone(double time, String task) {
-        view.updateOneWidget(time, task);
+    public void calculate(String elements, String threads) {
+        tasker.launchTasks(taskModel, elements, threads, this);
+    }
+
+    @Override
+    public List<ItemTask> getItemTasks() {
+        return taskModel.getItemTasks();
     }
 
 

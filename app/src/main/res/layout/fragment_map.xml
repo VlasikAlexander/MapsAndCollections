@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -17,7 +16,7 @@
 
     <include
         android:id="@+id/include1"
-        layout="@layout/widget"
+        layout="@layout/item_task_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -29,7 +28,7 @@
 
     <include
         android:id="@+id/include2"
-        layout="@layout/widget"
+        layout="@layout/item_task_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -42,7 +41,7 @@
 
     <include
         android:id="@+id/include3"
-        layout="@layout/widget"
+        layout="@layout/item_task_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -54,7 +53,7 @@
 
     <include
         android:id="@+id/include4"
-        layout="@layout/widget"
+        layout="@layout/item_task_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -67,7 +66,7 @@
 
     <include
         android:id="@+id/include5"
-        layout="@layout/widget"
+        layout="@layout/item_task_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -79,7 +78,7 @@
 
     <include
         android:id="@+id/include6"
-        layout="@layout/widget"
+        layout="@layout/item_task_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

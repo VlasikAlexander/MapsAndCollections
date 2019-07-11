@@ -6,7 +6,7 @@ public class MapContract {
 
     public interface IPresenter {
 
-        void calculate(String threads, String elements);
+        void calculate(String elements, String threads);
     }
 
     public interface IView {

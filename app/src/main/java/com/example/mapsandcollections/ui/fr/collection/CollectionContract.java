@@ -1,19 +1,21 @@
 package com.example.mapsandcollections.ui.fr.collection;
 
+import com.example.mapsandcollections.dto.ItemTask;
+
 import java.util.List;
 
 public class CollectionContract {
 
     public interface IPresenter {
 
-        void calculate(String threads, String elements);
+        void calculate(String elements, String threads);
+
+        List<ItemTask> getItemTasks();
     }
 
     public interface IView {
 
-        void updateUI(List<Double> list);
-
-        void updateOneWidget(double time, String task);
+        void updateUI(int position);
     }
 
     public interface IHost {

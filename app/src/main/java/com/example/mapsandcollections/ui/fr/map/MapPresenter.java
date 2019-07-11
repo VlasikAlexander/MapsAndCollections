@@ -2,44 +2,32 @@ package com.example.mapsandcollections.ui.fr.map;
 
 import com.example.mapsandcollections.components.tasker.ITasker;
 import com.example.mapsandcollections.components.tasker.ITaskerListener;
+import com.example.mapsandcollections.dto.IItemTaskModel;
 
 import java.util.List;
 
 public class MapPresenter implements MapContract.IPresenter, ITaskerListener {
 
-    public static final String MAPS = "MAPS";
+
     private final MapContract.IView view;
 
     private final ITasker tasker;
+    private final IItemTaskModel taskModel;
 
-    public MapPresenter(MapContract.IView view, ITasker tasker ) {
+    public MapPresenter(MapContract.IView view, ITasker tasker, IItemTaskModel taskModel ) {
         this.view = view;
         this.tasker =  tasker;
-        tasker.setListener(this);
+        this.taskModel =  taskModel;
     }
 
 
     @Override
-    public void calculate(String threads, String elements) {
-
-        tasker.launchTasks(MAPS, threads, elements);
-
-    }
-
-    @Override
-    public void  onResult(List<Double> list) {
-        view.updateUI(list);
+    public void calculate(String elements, String threads) {
+        tasker.launchTasks(taskModel, elements, threads, this);
     }
 
     @Override
     public void onDone(int position) {
-
     }
-
-    @Override
-    public void onDone(double v, String cowAddBegin) {
-
-    }
-
 
 }
