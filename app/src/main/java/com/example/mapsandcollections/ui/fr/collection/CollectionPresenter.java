@@ -1,5 +1,7 @@
 package com.example.mapsandcollections.ui.fr.collection;
 
+import android.text.TextUtils;
+
 import com.example.mapsandcollections.components.tasker.ITasker;
 import com.example.mapsandcollections.components.tasker.ITaskerListener;
 import com.example.mapsandcollections.dto.IItemTaskModel;
@@ -28,7 +30,11 @@ public class CollectionPresenter implements CollectionContract.IPresenter, ITask
 
     @Override
     public void calculate(String elements, String threads) {
+        if (!TextUtils.isDigitsOnly(elements) || !TextUtils.isDigitsOnly(threads) || TextUtils.isEmpty(elements) || TextUtils.isEmpty(threads) || "0".contentEquals(elements) || "0".contentEquals(threads))
+            return;
+        view.setShowProgressBar();
         tasker.launchTasks(taskModel, elements, threads, this);
+
     }
 
     @Override

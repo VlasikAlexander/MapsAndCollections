@@ -9,8 +9,6 @@ public interface IItemTaskModel {
 
    List<ItemTask> getItemTasks();
 
-   void setElements(List<Object> arrayList, List<Object> linkedList, List<Object> copyOnWriteList);
-
    void setListener(ITaskerListener listener);
 
    List<Callable<Double>> getTasks();

@@ -9,8 +9,4 @@ public class MainActivityContract {
     public interface IPresenter {
 
     }
-
-    public interface IHost {
-
-    }
 }

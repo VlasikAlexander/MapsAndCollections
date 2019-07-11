@@ -1,8 +1,5 @@
 package com.example.mapsandcollections.ui;
 
-import android.view.View;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;

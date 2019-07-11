@@ -16,6 +16,8 @@ public class CollectionContract {
     public interface IView {
 
         void updateUI(int position);
+
+        void setShowProgressBar();
     }
 
     public interface IHost {

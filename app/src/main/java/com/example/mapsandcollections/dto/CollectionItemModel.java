@@ -1,6 +1,5 @@
 package com.example.mapsandcollections.dto;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -37,7 +36,7 @@ public class CollectionItemModel implements IItemTaskModel {
 
     public CollectionItemModel() {
         handler = new Handler(Looper.getMainLooper());
-        createItemModel();
+        createModel();
     }
 
 
@@ -46,16 +45,7 @@ public class CollectionItemModel implements IItemTaskModel {
         return itemTaskList;
     }
 
-
-
-    @Override
-    public void setElements(List<Object> arrayList, List<Object> linkedList, List<Object> copyOnWriteList) {
-        this.arrayList = arrayList;
-        this.linkedList = linkedList;
-        this.copyOnWriteArrayList = copyOnWriteList;
-    }
-
-    private void createItemModel() {
+    private void createModel() {
 
         itemTaskList = new ArrayList<>();
         itemTaskList.add(new ItemTask(
@@ -233,59 +223,38 @@ public class CollectionItemModel implements IItemTaskModel {
                 }
         ));
 
-        itemTaskList.add(new ItemTask(
-                13,
-                LINKED_LIST,
-                REMOVE_MIDDLE,
-                () -> {
+        itemTaskList.add(new ItemTask(13, LINKED_LIST, REMOVE_MIDDLE, () -> {
                     double start = System.nanoTime();
                     getElements(LINKED_LIST).remove(getSize() / 2);
                     itemTaskList.get(13).setResult((System.nanoTime() - start) / 1_000_000);
                     itemTaskList.get(13).setShowProgressBar(false);
                     handler.post(() -> listener.onDone(13));
                     return -1D;
-                }
-        ));
-        itemTaskList.add(new ItemTask(
-                14,
-                COW_LIST,
-                REMOVE_MIDDLE,
-                () -> {
+                }));
+        itemTaskList.add(new ItemTask(14, COW_LIST, REMOVE_MIDDLE, () -> {
                     double start = System.nanoTime();
                     getElements(COW_LIST).remove(getSize() / 2);
                     itemTaskList.get(14).setResult((System.nanoTime() - start) / 1_000_000);
                     itemTaskList.get(14).setShowProgressBar(false);
                     handler.post(() -> listener.onDone(14));
                     return -1D;
-                }
-        ));
-
-        itemTaskList.add(new ItemTask(
-                15,
-                ARRAY_LIST,
-                REMOVE_END,
-                () -> {
+                }));
+        itemTaskList.add(new ItemTask(15, ARRAY_LIST, REMOVE_END, () -> {
                     double start = System.nanoTime();
                     getElements(ARRAY_LIST).remove(getSize() - 1);
                     itemTaskList.get(15).setResult((System.nanoTime() - start) / 1_000_000);
                     itemTaskList.get(15).setShowProgressBar(false);
                     handler.post(() -> listener.onDone(15));
                     return -1D;
-                }
-        ));
-        itemTaskList.add(new ItemTask(
-                16,
-                LINKED_LIST,
-                REMOVE_END,
-                () -> {
+                }));
+        itemTaskList.add(new ItemTask(16, LINKED_LIST, REMOVE_END, () -> {
                     double start = System.nanoTime();
                     getElements(LINKED_LIST).remove(getSize() - 1);
                     itemTaskList.get(16).setResult((System.nanoTime() - start) / 1_000_000);
                     itemTaskList.get(16).setShowProgressBar(false);
                     handler.post(() -> listener.onDone(16));
                     return -1D;
-                }
-        ));
+                }));
 
         itemTaskList.add(new ItemTask(
                 17,

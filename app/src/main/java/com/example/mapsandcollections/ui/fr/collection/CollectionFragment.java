@@ -1,8 +1,6 @@
 package com.example.mapsandcollections.ui.fr.collection;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mapsandcollections.R;
 import com.example.mapsandcollections.components.Injections;
-import com.example.mapsandcollections.dto.ItemTask;
-
-import java.util.List;
 
 
 public class CollectionFragment extends Fragment implements CollectionContract.IView, View.OnClickListener {
 
     private CollectionContract.IPresenter presenter;
     private CollectionRecyclerViewAdapter adapter;
-
     private EditText threadsView, elementsView;
-    private List<ItemTask> itemTasks;
+
 
     public CollectionFragment() {
         this.presenter = Injections.getCollectionPresenter(this);
@@ -51,40 +45,21 @@ public class CollectionFragment extends Fragment implements CollectionContract.I
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        itemTasks = presenter.getItemTasks();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     @Override
     public void onClick(View v) {
-        if (TextUtils.isEmpty(elementsView.getText()) ||
-                TextUtils.isEmpty(threadsView.getText()) ||
-                "0".contentEquals(elementsView.getText()) ||
-                "0".contentEquals(threadsView.getText())
-        ) return;
-        setShowProgressBar();
-        adapter.notifyDataSetChanged();
         presenter.calculate(elementsView.getText().toString(), threadsView.getText().toString());
     }
 
-    private void setShowProgressBar() {
-        for (ItemTask it : itemTasks) {
-            it.setShowProgressBar(true);
-        }
+    @Override
+    public void setShowProgressBar() {
+        adapter.setShowProgressBar();
     }
 
     @Override
     public void updateUI(int position) {
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemChanged(position);
     }
 
     private void initViews(View v) {

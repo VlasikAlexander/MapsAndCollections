@@ -26,7 +26,7 @@ public class CollectionRecyclerViewAdapter extends RecyclerView.Adapter<Collecti
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_task_view, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_task_view, null, false);
         return new MyViewHolder(v);
     }
 
@@ -40,10 +40,17 @@ public class CollectionRecyclerViewAdapter extends RecyclerView.Adapter<Collecti
         return results.size();
     }
 
+    void setShowProgressBar() {
+        for (ItemTask it : results) {
+            it.setShowProgressBar(true);
+        }
+        notifyDataSetChanged();
+    }
+
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView title, description, result;
-        private ProgressBar progressBar;
+        private final TextView title, description, result;
+        private final ProgressBar progressBar;
 
         MyViewHolder(@NonNull View itemView) {
             super(itemView);
