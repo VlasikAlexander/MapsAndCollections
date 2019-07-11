@@ -6,5 +6,7 @@ public interface ITaskerListener {
 
      void onResult(List<Double> list);
 
-     void onDone(double time, String task);
+     void onDone(int position);
+
+     void onDone(double v, String cowAddBegin);
 }

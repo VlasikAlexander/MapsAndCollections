@@ -32,7 +32,14 @@ public class MapPresenter implements MapContract.IPresenter, ITaskerListener {
     }
 
     @Override
-    public void onDone(double time, String task) {
+    public void onDone(int position) {
 
     }
+
+    @Override
+    public void onDone(double v, String cowAddBegin) {
+
+    }
+
+
 }

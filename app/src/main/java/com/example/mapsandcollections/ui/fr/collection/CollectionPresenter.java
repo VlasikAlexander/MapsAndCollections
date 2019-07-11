@@ -28,6 +28,11 @@ public class CollectionPresenter implements CollectionContract.IPresenter, ITask
     }
 
     @Override
+    public void onDone(int position) {
+
+    }
+
+    @Override
     public void onDone(double time, String task) {
         view.updateOneWidget(time, task);
     }

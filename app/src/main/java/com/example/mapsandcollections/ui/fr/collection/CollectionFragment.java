@@ -2,7 +2,6 @@ package com.example.mapsandcollections.ui.fr.collection;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +12,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mapsandcollections.R;
 import com.example.mapsandcollections.components.Injections;
+import com.example.mapsandcollections.components.tasker.TasksModel;
+import com.example.mapsandcollections.dto.IItemTaskModel;
+import com.example.mapsandcollections.dto.ItemTask;
+import com.example.mapsandcollections.dto.ItemTaskModel;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.mapsandcollections.components.tasker.TasksModel.ARRAYLIST_ADD_BEGIN;
@@ -46,6 +52,7 @@ public class CollectionFragment extends Fragment implements CollectionContract.I
 
     private CollectionContract.IPresenter presenter;
     private CollectionContract.IHost host;
+    private CollectionRecyclerViewAdapter adapter;
     private static final String ARRAY_LIST = "ArrayList";
     private static final String LINKED_LIST = "LinkedList";
     private static final String COPY_ON_WRITE_LIST = "CopyOnWriteList";
@@ -66,6 +73,8 @@ public class CollectionFragment extends Fragment implements CollectionContract.I
 
     private Button button;
     private EditText threadsView, elementsView;
+    private RecyclerView recyclerView;
+    List<ItemTask> itemTasks;
 
     public static CollectionFragment newInstance() {
 
@@ -78,7 +87,7 @@ public class CollectionFragment extends Fragment implements CollectionContract.I
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_collection, null, false);
+        View v = inflater.inflate(R.layout.fragment_collection2, null, false);
         initViews(v);
         presenter = Injections.getCollectionPresenter(this);
         return v;
@@ -88,6 +97,8 @@ public class CollectionFragment extends Fragment implements CollectionContract.I
     public void onAttach(Context context) {
         super.onAttach(context);
         host = (CollectionContract.IHost) context;
+        ItemTaskModel itemTaskModel = new ItemTaskModel();
+        itemTasks = itemTaskModel.getItemTasks();
     }
 
     @Override
@@ -98,14 +109,16 @@ public class CollectionFragment extends Fragment implements CollectionContract.I
 
     @Override
     public void onClick(View v) {
-        final String threads = threadsView.getText().toString();
-        final String elements = elementsView.getText().toString();
-        if (TextUtils.isEmpty(threads) || TextUtils.isEmpty(elements) || "0".equals(elements) || "0".equals(threads))
-            return;
-        showProgressBar(true);
-        clearTextHolder();
+        adapter.notifyItemChanged(3);
 
-        presenter.calculate(threads, elements);
+//        final String threads = threadsView.getText().toString();
+//        final String elements = elementsView.getText().toString();
+//        if (TextUtils.isEmpty(threads) || TextUtils.isEmpty(elements) || "0".equals(elements) || "0".equals(threads))
+//            return;
+//        showProgressBar(true);
+//        clearTextHolder();
+//
+//        presenter.calculate(threads, elements);
     }
 
     private void clearTextHolder() {
@@ -261,6 +274,16 @@ public class CollectionFragment extends Fragment implements CollectionContract.I
         button = v.findViewById(R.id.calculate_button);
         button.setOnClickListener(this);
 
+        recyclerView = v.findViewById(R.id.recycler);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        recyclerView.addItemDecoration(new SpacesItemDecoration(8));
+        IItemTaskModel taskModel = new ItemTaskModel();
+        
+
+
+        adapter = new CollectionRecyclerViewAdapter(itemTasks);
+        recyclerView.setAdapter(adapter);
+
         threadsView = v.findViewById(R.id.editText_threads);
         elementsView = v.findViewById(R.id.editText_elements);
 
@@ -288,54 +311,54 @@ public class CollectionFragment extends Fragment implements CollectionContract.I
         cow_ListRemoveMiddle = v.findViewById(R.id.include18);
         cow_ListRemoveEnd = v.findViewById(R.id.include21);
 
-
-        ((TextView) arrayListAddToBegin.findViewById(R.id.title)).setText(ARRAY_LIST);
-        ((TextView) arrayListAddToEnd.findViewById(R.id.title)).setText(ARRAY_LIST);
-        ((TextView) arrayListAddToMiddle.findViewById(R.id.title)).setText(ARRAY_LIST);
-        ((TextView) arrayListSearchByValue.findViewById(R.id.title)).setText(ARRAY_LIST);
-        ((TextView) arrayListRemoveBegin.findViewById(R.id.title)).setText(ARRAY_LIST);
-        ((TextView) arrayListRemoveMiddle.findViewById(R.id.title)).setText(ARRAY_LIST);
-        ((TextView) arrayListRemoveEnd.findViewById(R.id.title)).setText(ARRAY_LIST);
-
-        ((TextView) arrayListAddToBegin.findViewById(R.id.description)).setText(ADD_IN_BEGINING);
-        ((TextView) arrayListAddToEnd.findViewById(R.id.description)).setText(ADD_IN_END);
-        ((TextView) arrayListAddToMiddle.findViewById(R.id.description)).setText(ADD_IN_MIDDLE);
-        ((TextView) arrayListSearchByValue.findViewById(R.id.description)).setText(SEARCH_BY_VALUE);
-        ((TextView) arrayListRemoveBegin.findViewById(R.id.description)).setText(REMOVE_IN_BEGINNING);
-        ((TextView) arrayListRemoveMiddle.findViewById(R.id.description)).setText(REMOVE_IN_MIDDLE);
-        ((TextView) arrayListRemoveEnd.findViewById(R.id.description)).setText(REMOVE_IN_END);
-
-        ((TextView) linkedListAddToBegin.findViewById(R.id.title)).setText(LINKED_LIST);
-        ((TextView) linkedListAddToEnd.findViewById(R.id.title)).setText(LINKED_LIST);
-        ((TextView) linkedListAddToMiddle.findViewById(R.id.title)).setText(LINKED_LIST);
-        ((TextView) linkedListRemoveEnd.findViewById(R.id.title)).setText(LINKED_LIST);
-        ((TextView) linkedListRemoveMiddle.findViewById(R.id.title)).setText(LINKED_LIST);
-        ((TextView) linkedListRemoveBegin.findViewById(R.id.title)).setText(LINKED_LIST);
-        ((TextView) linkedListSearchByValue.findViewById(R.id.title)).setText(LINKED_LIST);
-
-        ((TextView) linkedListAddToBegin.findViewById(R.id.description)).setText(ADD_IN_BEGINING);
-        ((TextView) linkedListAddToEnd.findViewById(R.id.description)).setText(ADD_IN_END);
-        ((TextView) linkedListAddToMiddle.findViewById(R.id.description)).setText(ADD_IN_MIDDLE);
-        ((TextView) linkedListSearchByValue.findViewById(R.id.description)).setText(SEARCH_BY_VALUE);
-        ((TextView) linkedListRemoveBegin.findViewById(R.id.description)).setText(REMOVE_IN_BEGINNING);
-        ((TextView) linkedListRemoveMiddle.findViewById(R.id.description)).setText(REMOVE_IN_MIDDLE);
-        ((TextView) linkedListRemoveEnd.findViewById(R.id.description)).setText(REMOVE_IN_END);
-
-        ((TextView) cow_ListAddToBegin.findViewById(R.id.title)).setText(COPY_ON_WRITE_LIST);
-        ((TextView) cow_ListAddToEnd.findViewById(R.id.title)).setText(COPY_ON_WRITE_LIST);
-        ((TextView) cow_ListAddToMiddle.findViewById(R.id.title)).setText(COPY_ON_WRITE_LIST);
-        ((TextView) cow_ListSearchByValue.findViewById(R.id.title)).setText(COPY_ON_WRITE_LIST);
-        ((TextView) cow_ListRemoveBegin.findViewById(R.id.title)).setText(COPY_ON_WRITE_LIST);
-        ((TextView) cow_ListRemoveMiddle.findViewById(R.id.title)).setText(COPY_ON_WRITE_LIST);
-        ((TextView) cow_ListRemoveEnd.findViewById(R.id.title)).setText(COPY_ON_WRITE_LIST);
-
-        ((TextView) cow_ListAddToBegin.findViewById(R.id.description)).setText(ADD_IN_BEGINING);
-        ((TextView) cow_ListAddToEnd.findViewById(R.id.description)).setText(ADD_IN_END);
-        ((TextView) cow_ListAddToMiddle.findViewById(R.id.description)).setText(ADD_IN_MIDDLE);
-        ((TextView) cow_ListSearchByValue.findViewById(R.id.description)).setText(SEARCH_BY_VALUE);
-        ((TextView) cow_ListRemoveBegin.findViewById(R.id.description)).setText(REMOVE_IN_BEGINNING);
-        ((TextView) cow_ListRemoveMiddle.findViewById(R.id.description)).setText(REMOVE_IN_MIDDLE);
-        ((TextView) cow_ListRemoveEnd.findViewById(R.id.description)).setText(REMOVE_IN_END);
+//
+//        ((TextView) arrayListAddToBegin.findViewById(R.id.title)).setText(ARRAY_LIST);
+//        ((TextView) arrayListAddToEnd.findViewById(R.id.title)).setText(ARRAY_LIST);
+//        ((TextView) arrayListAddToMiddle.findViewById(R.id.title)).setText(ARRAY_LIST);
+//        ((TextView) arrayListSearchByValue.findViewById(R.id.title)).setText(ARRAY_LIST);
+//        ((TextView) arrayListRemoveBegin.findViewById(R.id.title)).setText(ARRAY_LIST);
+//        ((TextView) arrayListRemoveMiddle.findViewById(R.id.title)).setText(ARRAY_LIST);
+//        ((TextView) arrayListRemoveEnd.findViewById(R.id.title)).setText(ARRAY_LIST);
+//
+//        ((TextView) arrayListAddToBegin.findViewById(R.id.description)).setText(ADD_IN_BEGINING);
+//        ((TextView) arrayListAddToEnd.findViewById(R.id.description)).setText(ADD_IN_END);
+//        ((TextView) arrayListAddToMiddle.findViewById(R.id.description)).setText(ADD_IN_MIDDLE);
+//        ((TextView) arrayListSearchByValue.findViewById(R.id.description)).setText(SEARCH_BY_VALUE);
+//        ((TextView) arrayListRemoveBegin.findViewById(R.id.description)).setText(REMOVE_IN_BEGINNING);
+//        ((TextView) arrayListRemoveMiddle.findViewById(R.id.description)).setText(REMOVE_IN_MIDDLE);
+//        ((TextView) arrayListRemoveEnd.findViewById(R.id.description)).setText(REMOVE_IN_END);
+//
+//        ((TextView) linkedListAddToBegin.findViewById(R.id.title)).setText(LINKED_LIST);
+//        ((TextView) linkedListAddToEnd.findViewById(R.id.title)).setText(LINKED_LIST);
+//        ((TextView) linkedListAddToMiddle.findViewById(R.id.title)).setText(LINKED_LIST);
+//        ((TextView) linkedListRemoveEnd.findViewById(R.id.title)).setText(LINKED_LIST);
+//        ((TextView) linkedListRemoveMiddle.findViewById(R.id.title)).setText(LINKED_LIST);
+//        ((TextView) linkedListRemoveBegin.findViewById(R.id.title)).setText(LINKED_LIST);
+//        ((TextView) linkedListSearchByValue.findViewById(R.id.title)).setText(LINKED_LIST);
+//
+//        ((TextView) linkedListAddToBegin.findViewById(R.id.description)).setText(ADD_IN_BEGINING);
+//        ((TextView) linkedListAddToEnd.findViewById(R.id.description)).setText(ADD_IN_END);
+//        ((TextView) linkedListAddToMiddle.findViewById(R.id.description)).setText(ADD_IN_MIDDLE);
+//        ((TextView) linkedListSearchByValue.findViewById(R.id.description)).setText(SEARCH_BY_VALUE);
+//        ((TextView) linkedListRemoveBegin.findViewById(R.id.description)).setText(REMOVE_IN_BEGINNING);
+//        ((TextView) linkedListRemoveMiddle.findViewById(R.id.description)).setText(REMOVE_IN_MIDDLE);
+//        ((TextView) linkedListRemoveEnd.findViewById(R.id.description)).setText(REMOVE_IN_END);
+//
+//        ((TextView) cow_ListAddToBegin.findViewById(R.id.title)).setText(COPY_ON_WRITE_LIST);
+//        ((TextView) cow_ListAddToEnd.findViewById(R.id.title)).setText(COPY_ON_WRITE_LIST);
+//        ((TextView) cow_ListAddToMiddle.findViewById(R.id.title)).setText(COPY_ON_WRITE_LIST);
+//        ((TextView) cow_ListSearchByValue.findViewById(R.id.title)).setText(COPY_ON_WRITE_LIST);
+//        ((TextView) cow_ListRemoveBegin.findViewById(R.id.title)).setText(COPY_ON_WRITE_LIST);
+//        ((TextView) cow_ListRemoveMiddle.findViewById(R.id.title)).setText(COPY_ON_WRITE_LIST);
+//        ((TextView) cow_ListRemoveEnd.findViewById(R.id.title)).setText(COPY_ON_WRITE_LIST);
+//
+//        ((TextView) cow_ListAddToBegin.findViewById(R.id.description)).setText(ADD_IN_BEGINING);
+//        ((TextView) cow_ListAddToEnd.findViewById(R.id.description)).setText(ADD_IN_END);
+//        ((TextView) cow_ListAddToMiddle.findViewById(R.id.description)).setText(ADD_IN_MIDDLE);
+//        ((TextView) cow_ListSearchByValue.findViewById(R.id.description)).setText(SEARCH_BY_VALUE);
+//        ((TextView) cow_ListRemoveBegin.findViewById(R.id.description)).setText(REMOVE_IN_BEGINNING);
+//        ((TextView) cow_ListRemoveMiddle.findViewById(R.id.description)).setText(REMOVE_IN_MIDDLE);
+//        ((TextView) cow_ListRemoveEnd.findViewById(R.id.description)).setText(REMOVE_IN_END);
     }
 
     private void showProgressBar(boolean b) {
