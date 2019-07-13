@@ -3,7 +3,7 @@ package com.example.mapsandcollections.dto;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.example.mapsandcollections.components.tasker.ITaskerListener;
+import com.example.mapsandcollections.components.tasker.Tasker;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -27,14 +27,14 @@ public class CollectionItemModel implements IItemTaskModel {
     private static final String REMOVE_END = "Remove in the\n end";
     private static final String SEARCH_BY_VALUE = "Search by\n value";
 
+    private final Handler handler;
     private List<Object> arrayList;
     private List<Object> linkedList;
     private List<Object> copyOnWriteArrayList;
-    private final Handler handler;
-    private ITaskerListener listener;
+    private Tasker.OnTaskDoneListener listener;
     private List<ItemTask> itemTaskList;
 
-    public CollectionItemModel() {
+    CollectionItemModel() {
         handler = new Handler(Looper.getMainLooper());
         createModel();
     }
@@ -48,237 +48,161 @@ public class CollectionItemModel implements IItemTaskModel {
     private void createModel() {
 
         itemTaskList = new ArrayList<>();
-        itemTaskList.add(new ItemTask(
-                0,
-                ARRAY_LIST,
-                ADD_START,
-                () -> {
+        itemTaskList.add(new ItemTask(0, ARRAY_LIST, ADD_START, () -> {
                     double start = System.nanoTime();
-                    getElements(ARRAY_LIST).add(0, new Object());
+                    getList(ARRAY_LIST).add(0, new Object());
                     itemTaskList.get(0).setResult((System.nanoTime() - start) / 1_000_000);
                     itemTaskList.get(0).setShowProgressBar(false);
                     handler.post(() -> listener.onDone(0));
                     return -1D;
-                }
-        ));
-        itemTaskList.add(new ItemTask(
-                1,
-                LINKED_LIST,
-                ADD_START,
-                () -> {
+                }));
+        itemTaskList.add(new ItemTask(1, LINKED_LIST, ADD_START, () -> {
                     double start = System.nanoTime();
-                    getElements(LINKED_LIST).add(0, new Object());
+                    getList(LINKED_LIST).add(0, new Object());
                     itemTaskList.get(1).setResult((System.nanoTime() - start) / 1_000_000);
                     itemTaskList.get(1).setShowProgressBar(false);
                     handler.post(() -> listener.onDone(1));
                     return -1D;
-                }
-        ));
-        itemTaskList.add(new ItemTask(
-                2,
-                COW_LIST,
-                ADD_START,
-                () -> {
+                }));
+        itemTaskList.add(new ItemTask(2, COW_LIST, ADD_START, () -> {
                     double start = System.nanoTime();
-                    getElements(COW_LIST).add(0, new Object());
+                    getList(COW_LIST).add(0, new Object());
                     itemTaskList.get(2).setResult((System.nanoTime() - start) / 1_000_000);
                     itemTaskList.get(2).setShowProgressBar(false);
                     handler.post(() -> listener.onDone(2));
                     return -1D;
-                }
-        ));
+                }));
 
-        itemTaskList.add(new ItemTask(
-                3,
-                ARRAY_LIST,
-                ADD_MIDDLE,
-                () -> {
+        itemTaskList.add(new ItemTask(3, ARRAY_LIST, ADD_MIDDLE, () -> {
                     double start = System.nanoTime();
-                    getElements(ARRAY_LIST).add(getSize() / 2, new Object());
+                    getList(ARRAY_LIST).add(getSize(ARRAY_LIST) / 2, new Object());
                     itemTaskList.get(3).setResult((System.nanoTime() - start) / 1_000_000);
                     itemTaskList.get(3).setShowProgressBar(false);
                     handler.post(() -> listener.onDone(3));
                     return -1D;
-                }
-        ));
-        itemTaskList.add(new ItemTask(
-                4,
-                LINKED_LIST,
-                ADD_MIDDLE,
-                () -> {
+                }));
+        itemTaskList.add(new ItemTask(4, LINKED_LIST, ADD_MIDDLE, () -> {
                     double start = System.nanoTime();
-                    getElements(ARRAY_LIST).add(getSize() / 2, new Object());
+                    getList(ARRAY_LIST).add(getSize(LINKED_LIST) / 2, new Object());
                     itemTaskList.get(4).setResult((System.nanoTime() - start) / 1_000_000);
                     itemTaskList.get(4).setShowProgressBar(false);
                     handler.post(() -> listener.onDone(4));
                     return -1D;
-                }
-        ));
-        itemTaskList.add(new ItemTask(
-                5,
-                COW_LIST,
-                ADD_MIDDLE,
-                () -> {
+                }));
+        itemTaskList.add(new ItemTask(5, COW_LIST, ADD_MIDDLE, () -> {
                     double start = System.nanoTime();
-                    getElements(ARRAY_LIST).add(getSize() / 2, new Object());
+                    getList(ARRAY_LIST).add(getSize(COW_LIST) / 2, new Object());
                     itemTaskList.get(5).setResult((System.nanoTime() - start) / 1_000_000);
                     itemTaskList.get(5).setShowProgressBar(false);
                     handler.post(() -> listener.onDone(5));
                     return -1D;
-                }
-        ));
+                }));
 
-        itemTaskList.add(new ItemTask(
-                6,
-                ARRAY_LIST,
-                ADD_END,
-                () -> {
+        itemTaskList.add(new ItemTask(6, ARRAY_LIST, ADD_END, () -> {
                     double start = System.nanoTime();
-                    getElements(ARRAY_LIST).add(getSize(), new Object());
+                    getList(ARRAY_LIST).add(getSize(ARRAY_LIST), new Object());
                     itemTaskList.get(6).setResult((System.nanoTime() - start) / 1_000_000);
                     itemTaskList.get(6).setShowProgressBar(false);
                     handler.post(() -> listener.onDone(6));
                     return -1D;
-                }
-        ));
-        itemTaskList.add(new ItemTask(
-                7,
-                LINKED_LIST,
-                ADD_END,
-                () -> {
+                }));
+        itemTaskList.add(new ItemTask(7, LINKED_LIST, ADD_END, () -> {
                     double start = System.nanoTime();
-                    getElements(ARRAY_LIST).add(getSize(), new Object());
+                    getList(ARRAY_LIST).add(getSize(LINKED_LIST), new Object());
                     itemTaskList.get(7).setResult((System.nanoTime() - start) / 1_000_000);
                     itemTaskList.get(7).setShowProgressBar(false);
                     handler.post(() -> listener.onDone(7));
                     return -1D;
-                }
-        ));
-        itemTaskList.add(new ItemTask(
-                8,
-                COW_LIST,
-                ADD_END,
-                () -> {
+                }));
+        itemTaskList.add(new ItemTask(8, COW_LIST, ADD_END, () -> {
                     double start = System.nanoTime();
-                    getElements(ARRAY_LIST).add(getSize(), new Object());
+                    getList(ARRAY_LIST).add(getSize(COW_LIST), new Object());
                     itemTaskList.get(8).setResult((System.nanoTime() - start) / 1_000_000);
                     itemTaskList.get(8).setShowProgressBar(false);
                     handler.post(() -> listener.onDone(8));
                     return -1D;
-                }
-        ));
+                }));
 
-        itemTaskList.add(new ItemTask(
-                9,
-                ARRAY_LIST,
-                REMOVE_START,
-                () -> {
+        itemTaskList.add(new ItemTask(9, ARRAY_LIST, REMOVE_START, () -> {
                     double start = System.nanoTime();
-                    getElements(ARRAY_LIST).remove(0);
+                    getList(ARRAY_LIST).remove(0);
                     itemTaskList.get(9).setResult((System.nanoTime() - start) / 1_000_000);
                     itemTaskList.get(9).setShowProgressBar(false);
                     handler.post(() -> listener.onDone(9));
                     return -1D;
-                }
-        ));
-        itemTaskList.add(new ItemTask(
-                10,
-                LINKED_LIST,
-                REMOVE_START,
-                () -> {
+                }));
+        itemTaskList.add(new ItemTask(10, LINKED_LIST, REMOVE_START, () -> {
                     double start = System.nanoTime();
-                    getElements(LINKED_LIST).remove(0);
+                    getList(LINKED_LIST).remove(0);
                     itemTaskList.get(10).setResult((System.nanoTime() - start) / 1_000_000);
                     itemTaskList.get(10).setShowProgressBar(false);
                     handler.post(() -> listener.onDone(10));
                     return -1D;
-                }
-        ));
-
-        itemTaskList.add(new ItemTask(
-                11,
-                COW_LIST,
-                REMOVE_START,
-                () -> {
+                }));
+        itemTaskList.add(new ItemTask(11, COW_LIST, REMOVE_START, () -> {
                     double start = System.nanoTime();
-                    getElements(COW_LIST).remove(0);
+                    getList(COW_LIST).remove(0);
                     itemTaskList.get(11).setResult((System.nanoTime() - start) / 1_000_000);
                     itemTaskList.get(11).setShowProgressBar(false);
                     handler.post(() -> listener.onDone(11));
                     return -1D;
-                }
-        ));
+                }));
 
-        itemTaskList.add(new ItemTask(
-                12,
-                ARRAY_LIST,
-                REMOVE_MIDDLE,
-                () -> {
+        itemTaskList.add(new ItemTask(12, ARRAY_LIST, REMOVE_MIDDLE, () -> {
                     double start = System.nanoTime();
-                    getElements(ARRAY_LIST).remove(getSize() / 2);
+                    getList(ARRAY_LIST).remove(getSize(ARRAY_LIST) / 2);
                     itemTaskList.get(12).setResult((System.nanoTime() - start) / 1_000_000);
                     itemTaskList.get(12).setShowProgressBar(false);
                     handler.post(() -> listener.onDone(12));
                     return -1D;
-                }
-        ));
-
+                }));
         itemTaskList.add(new ItemTask(13, LINKED_LIST, REMOVE_MIDDLE, () -> {
-                    double start = System.nanoTime();
-                    getElements(LINKED_LIST).remove(getSize() / 2);
-                    itemTaskList.get(13).setResult((System.nanoTime() - start) / 1_000_000);
-                    itemTaskList.get(13).setShowProgressBar(false);
-                    handler.post(() -> listener.onDone(13));
-                    return -1D;
-                }));
+            double start = System.nanoTime();
+            getList(LINKED_LIST).remove(getSize(LINKED_LIST) / 2);
+            itemTaskList.get(13).setResult((System.nanoTime() - start) / 1_000_000);
+            itemTaskList.get(13).setShowProgressBar(false);
+            handler.post(() -> listener.onDone(13));
+            return -1D;
+        }));
         itemTaskList.add(new ItemTask(14, COW_LIST, REMOVE_MIDDLE, () -> {
-                    double start = System.nanoTime();
-                    getElements(COW_LIST).remove(getSize() / 2);
-                    itemTaskList.get(14).setResult((System.nanoTime() - start) / 1_000_000);
-                    itemTaskList.get(14).setShowProgressBar(false);
-                    handler.post(() -> listener.onDone(14));
-                    return -1D;
-                }));
-        itemTaskList.add(new ItemTask(15, ARRAY_LIST, REMOVE_END, () -> {
-                    double start = System.nanoTime();
-                    getElements(ARRAY_LIST).remove(getSize() - 1);
-                    itemTaskList.get(15).setResult((System.nanoTime() - start) / 1_000_000);
-                    itemTaskList.get(15).setShowProgressBar(false);
-                    handler.post(() -> listener.onDone(15));
-                    return -1D;
-                }));
-        itemTaskList.add(new ItemTask(16, LINKED_LIST, REMOVE_END, () -> {
-                    double start = System.nanoTime();
-                    getElements(LINKED_LIST).remove(getSize() - 1);
-                    itemTaskList.get(16).setResult((System.nanoTime() - start) / 1_000_000);
-                    itemTaskList.get(16).setShowProgressBar(false);
-                    handler.post(() -> listener.onDone(16));
-                    return -1D;
-                }));
+            double start = System.nanoTime();
+            getList(COW_LIST).remove(getSize(COW_LIST) / 2);
+            itemTaskList.get(14).setResult((System.nanoTime() - start) / 1_000_000);
+            itemTaskList.get(14).setShowProgressBar(false);
+            handler.post(() -> listener.onDone(14));
+            return -1D;
+        }));
 
-        itemTaskList.add(new ItemTask(
-                17,
-                COW_LIST,
-                REMOVE_END,
-                () -> {
+        itemTaskList.add(new ItemTask(15, ARRAY_LIST, REMOVE_END, () -> {
+            double start = System.nanoTime();
+            getList(ARRAY_LIST).remove(getSize(ARRAY_LIST) - 1);
+            itemTaskList.get(15).setResult((System.nanoTime() - start) / 1_000_000);
+            itemTaskList.get(15).setShowProgressBar(false);
+            handler.post(() -> listener.onDone(15));
+            return -1D;
+        }));
+        itemTaskList.add(new ItemTask(16, LINKED_LIST, REMOVE_END, () -> {
+            double start = System.nanoTime();
+            getList(LINKED_LIST).remove(linkedList.size() - 1);
+            itemTaskList.get(16).setResult((System.nanoTime() - start) / 1_000_000);
+            itemTaskList.get(16).setShowProgressBar(false);
+            handler.post(() -> listener.onDone(16));
+            return -1D;
+        }));
+        itemTaskList.add(new ItemTask(17, COW_LIST, REMOVE_END, () -> {
                     double start = System.nanoTime();
-                    getElements(COW_LIST).remove(getSize() - 1);
+                    getList(COW_LIST).remove(copyOnWriteArrayList.size() - 1);
                     itemTaskList.get(17).setResult((System.nanoTime() - start) / 1_000_000);
                     itemTaskList.get(17).setShowProgressBar(false);
                     handler.post(() -> listener.onDone(17));
                     return -1D;
-                }
-        ));
+                }));
 
-        itemTaskList.add(new ItemTask(
-                18,
-                ARRAY_LIST,
-                SEARCH_BY_VALUE,
-                () -> {
+        itemTaskList.add(new ItemTask(18, ARRAY_LIST, SEARCH_BY_VALUE, () -> {
                     final Random random = new Random();
-                    final Object suspect = getElements(ARRAY_LIST).get(random.nextInt(getSize()));
+                    final Object suspect = getList(ARRAY_LIST).get(random.nextInt(getSize(ARRAY_LIST)));
                     double start = System.nanoTime();
-                    for (Object o : getElements(ARRAY_LIST)) {
+                    for (Object o : getList(ARRAY_LIST)) {
                         if (suspect == o) {
                             itemTaskList.get(18).setResult((System.nanoTime() - start) / 1_000_000);
                             itemTaskList.get(18).setShowProgressBar(false);
@@ -287,17 +211,12 @@ public class CollectionItemModel implements IItemTaskModel {
                         }
                     }
                     return -1D;
-                }
-        ));
-        itemTaskList.add(new ItemTask(
-                19,
-                LINKED_LIST,
-                SEARCH_BY_VALUE,
-                () -> {
+                }));
+        itemTaskList.add(new ItemTask(19, LINKED_LIST, SEARCH_BY_VALUE, () -> {
                     final Random random = new Random();
-                    final Object suspect = getElements(LINKED_LIST).get(random.nextInt(getSize()));
+                    final Object suspect = getList(LINKED_LIST).get(random.nextInt(getSize(LINKED_LIST)));
                     double start = System.nanoTime();
-                    for (Object o : getElements(LINKED_LIST)) {
+                    for (Object o : getList(LINKED_LIST)) {
                         if (suspect == o) {
                             itemTaskList.get(19).setResult((System.nanoTime() - start) / 1_000_000);
                             itemTaskList.get(19).setShowProgressBar(false);
@@ -306,18 +225,12 @@ public class CollectionItemModel implements IItemTaskModel {
                         }
                     }
                     return -1D;
-                }
-
-        ));
-        itemTaskList.add(new ItemTask(
-                20,
-                COW_LIST,
-                SEARCH_BY_VALUE,
-                () -> {
+                }));
+        itemTaskList.add(new ItemTask(20, COW_LIST, SEARCH_BY_VALUE, () -> {
                     final Random random = new Random();
-                    final Object suspect = getElements(LINKED_LIST).get(random.nextInt(getSize()));
+                    final Object suspect = getList(LINKED_LIST).get(random.nextInt(getSize(LINKED_LIST)));
                     double start = System.nanoTime();
-                    for (Object o : getElements(LINKED_LIST)) {
+                    for (Object o : getList(LINKED_LIST)) {
                         if (suspect == o) {
                             itemTaskList.get(20).setResult((System.nanoTime() - start) / 1_000_000);
                             itemTaskList.get(20).setShowProgressBar(false);
@@ -326,46 +239,17 @@ public class CollectionItemModel implements IItemTaskModel {
                         }
                     }
                     return -1D;
-                }
-        ));
-    }
-
-    private List<Object> getElements(String type) {
-        switch (type) {
-            case ARRAY_LIST:
-                return getArrayList();
-            case LINKED_LIST:
-                return getLinkedList();
-            case COW_LIST:
-                return getCopyOnWriteList();
-        }
-        return new ArrayList<>();
-    }
-
-    private List<Object> getCopyOnWriteList() {
-        return copyOnWriteArrayList;
-    }
-
-    private List<Object> getLinkedList() {
-        return linkedList;
-    }
-
-    private List<Object> getArrayList() {
-        return arrayList;
-    }
-
-    private int getSize() {
-        return arrayList.size();
+                }));
     }
 
     @Override
-    public void setListener(ITaskerListener listener) {
+    public void setListener(Tasker.OnTaskDoneListener listener) {
         this.listener = listener;
     }
 
     @Override
     public List<Callable<Double>> getTasks() {
-        List<Callable<Double>> taskList = new ArrayList<>();
+        final List<Callable<Double>> taskList = new ArrayList<>();
 
         for (ItemTask itemTask : getItemTasks()) {
             taskList.add(itemTask.getTask());
@@ -375,21 +259,45 @@ public class CollectionItemModel implements IItemTaskModel {
 
     @Override
     public void createCollections(String elements) {
-        arrayList = getArrayList(elements);
-        linkedList = getLinkedList(elements);
-        copyOnWriteArrayList = getCopyOnWriteList(elements);
+        arrayList = createArrayList(elements);
+        linkedList = createLinkedList(elements);
+        copyOnWriteArrayList = createCopyOnWriteList(elements);
     }
 
 
-    private List<Object> getCopyOnWriteList(String elements) {
+    private int getSize(String type) {
+        switch (type) {
+            case LINKED_LIST:
+                return linkedList.size();
+            case ARRAY_LIST:
+                return arrayList.size();
+            case COW_LIST:
+                return copyOnWriteArrayList.size();
+        }
+        return 0;
+    }
+
+    private List<Object> getList(String type) {
+        switch (type) {
+            case LINKED_LIST:
+                return linkedList;
+            case ARRAY_LIST:
+                return arrayList;
+            case COW_LIST:
+                return copyOnWriteArrayList;
+        }
+        return new ArrayList<>();
+    }
+
+    private List<Object> createCopyOnWriteList(String elements) {
         return generateList(new CopyOnWriteArrayList<>(), elements);
     }
 
-    private List<Object> getLinkedList(String elements) {
+    private List<Object> createLinkedList(String elements) {
         return generateList(new LinkedList<>(), elements);
     }
 
-    private List<Object> getArrayList(String elements) {
+    private List<Object> createArrayList(String elements) {
         return generateList(new ArrayList<>(), elements);
     }
 

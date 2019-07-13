@@ -3,19 +3,13 @@ package com.example.mapsandcollections.ui;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.mapsandcollections.R;
-import com.example.mapsandcollections.components.Injections;
-import com.example.mapsandcollections.ui.fr.collection.CollectionContract;
-import com.example.mapsandcollections.ui.fr.map.MapContract;
+import com.example.mapsandcollections.ui.fr.BaseContract;
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity implements MainActivityContract.IView, MapContract.IHost, CollectionContract.IHost {
+public class MainActivity extends AppCompatActivity implements MainActivityContract.IView, BaseContract.IHost{
 
     private ViewPager viewPager;
     private TabLayout tableLayout;

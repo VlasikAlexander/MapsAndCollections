@@ -1,16 +1,17 @@
-package com.example.mapsandcollections.ui.fr.collection;
+package com.example.mapsandcollections.ui.fr;
 
 import com.example.mapsandcollections.dto.ItemTask;
 
 import java.util.List;
 
-public class CollectionContract {
+public class BaseContract {
 
     public interface IPresenter {
 
-        void calculate(String elements, String threads);
-
+        void calculate(String type, String elements, String threads);
         List<ItemTask> getItemTasks();
+
+        void setType(String type);
     }
 
     public interface IView {

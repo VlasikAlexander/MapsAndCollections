@@ -1,4 +1,4 @@
-package com.example.mapsandcollections.ui.fr.collection;
+package com.example.mapsandcollections.ui.fr;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +15,11 @@ import com.example.mapsandcollections.dto.ItemTask;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class CollectionRecyclerViewAdapter extends RecyclerView.Adapter<CollectionRecyclerViewAdapter.MyViewHolder> {
+public class TaskItemsRecyclerViewAdapter extends RecyclerView.Adapter<TaskItemsRecyclerViewAdapter.MyViewHolder> {
 
     private final List<ItemTask> results;
 
-    CollectionRecyclerViewAdapter(List<ItemTask> results) {
+    TaskItemsRecyclerViewAdapter(List<ItemTask> results) {
         this.results = results;
     }
 
@@ -31,7 +31,7 @@ public class CollectionRecyclerViewAdapter extends RecyclerView.Adapter<Collecti
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CollectionRecyclerViewAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TaskItemsRecyclerViewAdapter.MyViewHolder holder, int position) {
         holder.bindItem(results.get(position));
     }
 
@@ -47,12 +47,12 @@ public class CollectionRecyclerViewAdapter extends RecyclerView.Adapter<Collecti
         notifyDataSetChanged();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+     class MyViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView title, description, result;
         private final ProgressBar progressBar;
 
-        MyViewHolder(@NonNull View itemView) {
+         MyViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             description = itemView.findViewById(R.id.description);

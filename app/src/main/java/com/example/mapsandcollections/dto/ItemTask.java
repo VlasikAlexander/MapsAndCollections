@@ -2,7 +2,7 @@ package com.example.mapsandcollections.dto;
 
 import java.util.concurrent.Callable;
 
-public class ItemTask implements Cloneable {
+public class ItemTask {
 
     private final String title;
     private final String description;
@@ -48,8 +48,5 @@ public class ItemTask implements Cloneable {
         return task;
     }
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
+
 }

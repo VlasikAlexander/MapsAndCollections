@@ -5,11 +5,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.mapsandcollections.ui.fr.collection.CollectionFragment;
-import com.example.mapsandcollections.ui.fr.map.MapFragment;
+import com.example.mapsandcollections.ui.fr.BaseFragment;
 
-class MyFragmentAdapter extends FragmentPagerAdapter {
+public class MyFragmentAdapter extends FragmentPagerAdapter {
 
+    public static final String MAP = "MAP";
+    public static final String COLLECTION = "COLLECTION";
 
     MyFragmentAdapter(FragmentManager fm) {
         super(fm);
@@ -25,9 +26,9 @@ class MyFragmentAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return CollectionFragment.newInstance();
+                return BaseFragment.newInstance(COLLECTION);
             case 1:
-                return MapFragment.newInstance();
+                return BaseFragment.newInstance(MAP);
         }
         return null;
     }

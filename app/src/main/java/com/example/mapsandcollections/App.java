@@ -7,10 +7,11 @@ import com.example.mapsandcollections.components.Provider;
 
 public class App extends Application {
 
+    // TODO: 13.07.2019 Rename Classes and Methods
+
     @Override
     public void onCreate() {
         super.onCreate();
-
         Injections.setProvider(new Provider(this));
     }
 }

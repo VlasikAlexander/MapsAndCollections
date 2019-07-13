@@ -5,10 +5,6 @@ import com.example.mapsandcollections.dto.IItemTaskModel;
 
 public interface IProvider {
 
-    IItemTaskModel getCollectionItemModel();
-
-    IItemTaskModel getMapItemModel();
-
     ITasker getTasker();
 
 }
