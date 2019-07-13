@@ -8,6 +8,7 @@ import com.example.mapsandcollections.components.Provider;
 public class App extends Application {
 
     // TODO: 13.07.2019 Rename Classes and Methods
+    // TODO: 13.07.2019 Extract String Resources
 
     @Override
     public void onCreate() {
