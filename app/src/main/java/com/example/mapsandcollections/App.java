@@ -16,8 +16,5 @@ public class App extends Application {
         Injections.setProvider(new Provider(this));
     }
 
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-    }
+
 }
