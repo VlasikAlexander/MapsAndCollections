@@ -35,6 +35,7 @@ public class Tasker implements ITasker {
                 mainExecutor.shutdown();
             }
         });
+        singleExecutor.shutdown();
     }
 
 }

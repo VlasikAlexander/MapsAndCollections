@@ -4,18 +4,18 @@ import java.util.concurrent.Callable;
 
 public class ItemTask {
 
-    private final String title;
-    private final String description;
+    private final String type;
+    private final String action;
     private final int position;
     private double result;
     private Callable<Double> task;
 
     private boolean isShowProgressBar;
 
-    ItemTask(int position, String title, String description, Callable<Double> task) {
+    ItemTask(int position, String type, String action, Callable<Double> task) {
         this.position = position;
-        this.title = title;
-        this.description = description;
+        this.type = type;
+        this.action = action;
         this.task = task;
 
     }
@@ -32,12 +32,12 @@ public class ItemTask {
         this.result = result;
     }
 
-    public String getTitle() {
-        return title;
+    public String getType() {
+        return type;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAction() {
+        return action;
     }
 
     public boolean isShowProgressBar() {

@@ -69,8 +69,8 @@ public class TaskItemsRecyclerViewAdapter extends RecyclerView.Adapter<TaskItems
                 progressBar.setVisibility(View.INVISIBLE);
                 result.setVisibility(View.VISIBLE);
             }
-            title.setText(itemTask.getTitle());
-            description.setText(itemTask.getDescription());
+            title.setText(itemTask.getType());
+            description.setText(itemTask.getAction());
             result.setText(String.format("%s ms", decimalFormat.format(itemTask.getResult())));
         }
     }

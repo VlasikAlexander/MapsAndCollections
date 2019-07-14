@@ -17,15 +17,16 @@ import java.util.concurrent.Callable;
 
 public class MapItemModel implements IItemTaskModel {
 
-    private String HASH_MAP;
-    private String TREE_MAP;
+    private String hash_map;
+    private String tree_map;
 
-    private String ADD_NEW;
-    private String REMOVE;
-    private String SEARCH_BY_KEY;
+    private String add_new;
+    private String remove;
+    private String search_by_key;
 
     private final Handler handler;
     private final Context context;
+    private final Random random;
     private List<ItemTask> itemTaskList;
     private Map<Object, Object> hashMap;
     private Map<Object, Object> treeMap;
@@ -34,78 +35,63 @@ public class MapItemModel implements IItemTaskModel {
     MapItemModel(Context context) {
         this.handler = new Handler(Looper.getMainLooper());
         this.context = context;
+        random = new Random();
         initStrings();
         createModel();
     }
 
     private void initStrings() {
-        HASH_MAP = context.getString(R.string.hash_map);
-        TREE_MAP = context.getString(R.string.tree_map);
+        hash_map = context.getString(R.string.hash_map);
+        tree_map = context.getString(R.string.tree_map);
 
-        ADD_NEW = context.getString(R.string.add_new);
-        REMOVE = context.getString(R.string.remove);
-        SEARCH_BY_KEY = context.getString(R.string.search_by_key);
+        add_new = context.getString(R.string.add_new);
+        remove = context.getString(R.string.remove);
+        search_by_key = context.getString(R.string.search_by_key);
     }
 
     private void createModel() {
 
-        final Random random = new Random();
         itemTaskList = new ArrayList<>();
-        itemTaskList.add(new ItemTask(0, HASH_MAP, ADD_NEW, () -> {
-            final int int_key = random.nextInt(getSize(HASH_MAP));
-            double start = System.nanoTime();
-            hashMap.put(int_key, new Object());
-            handler.post(() -> listener.onDone(0, (System.nanoTime() - start) / 1_000_000));
+        itemTaskList.add(new ItemTask(0, hash_map, add_new, () -> {
+            setTask(itemTaskList.get(0));
             return -1D;
         }));
-
-        itemTaskList.add(new ItemTask(1, TREE_MAP, ADD_NEW, () -> {
-            double start = System.nanoTime();
-            final int int_key = random.nextInt(getSize(TREE_MAP));
-            treeMap.put(int_key, new Object());
-            handler.post(() -> listener.onDone(1, (System.nanoTime() - start) / 1_000_000));
+        itemTaskList.add(new ItemTask(1, tree_map, add_new, () -> {
+           setTask(itemTaskList.get(1));
             return -1D;
         }));
-
-        itemTaskList.add(new ItemTask(2, HASH_MAP, REMOVE, () -> {
-            final int int_key = random.nextInt(getSize(HASH_MAP));
-            hashMap.put(int_key, new Object());
-            double start = System.nanoTime();
-            hashMap.remove(int_key);
-            handler.post(() -> listener.onDone(2, (System.nanoTime() - start) / 1_000_000));
+        itemTaskList.add(new ItemTask(2, hash_map, remove, () -> {
+            setTask(itemTaskList.get(2));
             return -1D;
         }));
-
-        itemTaskList.add(new ItemTask(3, TREE_MAP, REMOVE, () -> {
-            final int int_key = random.nextInt(getSize(TREE_MAP));
-            double start = System.nanoTime();
-            treeMap.remove(int_key);
-            handler.post(() -> listener.onDone(3, (System.nanoTime() - start) / 1_000_000));
+        itemTaskList.add(new ItemTask(3, tree_map, remove, () -> {
+            setTask(itemTaskList.get(3));
             return -1D;
         }));
+        itemTaskList.add(new ItemTask(4, hash_map, search_by_key, () -> {
+            setTask(itemTaskList.get(4));
+            return -1D;
+        }));
+        itemTaskList.add(new ItemTask(5, tree_map, search_by_key, () -> {
+            setTask(itemTaskList.get(5));
+            return -1D;
+        }));
+    }
 
-        itemTaskList.add(new ItemTask(4, HASH_MAP, SEARCH_BY_KEY, () -> {
-            final int int_key = random.nextInt(getSize(HASH_MAP));
-            double start = System.nanoTime();
-            for (HashMap.Entry<Object, Object> it : hashMap.entrySet()) {
-                if ((int) it.getKey() == int_key) {
-                    handler.post(() -> listener.onDone(4, (System.nanoTime() - start) / 1_000_000));
-                }
+    private void  setTask(ItemTask itemTask) {
+        final int int_key = random.nextInt(getSize(itemTask.getType()));
+        final double start = System.nanoTime();
+        if (add_new.equals(itemTask.getAction())) {
+            getMapByType(itemTask.getType()).put(int_key, new Object());
+        } else if (remove.equals(itemTask.getAction())) {
+            getMapByType(itemTask.getType()).remove(int_key);
+        } else {
+            for (Map.Entry<Object, Object> it : getMapByType(itemTask.getType()).entrySet()) {
+                if ((int) it.getKey() == int_key)
+                    break;
             }
-            return -1D;
-        }));
-
-        itemTaskList.add(new ItemTask(5, TREE_MAP, SEARCH_BY_KEY, () -> {
-            final int int_key = random.nextInt(getSize(TREE_MAP));
-            double start = System.nanoTime();
-            for (TreeMap.Entry<Object, Object> it : treeMap.entrySet()) {
-                if ((int) it.getKey() == int_key) {
-                    handler.post(() -> listener.onDone(5, (System.nanoTime() - start) / 1_000_000));
-                }
-            }
-            return -1D;
-        }));
-
+        }
+        handler.post(() -> listener.onDone(itemTask.getPosition(), (System.nanoTime() - start) / 1_000_000));
     }
 
     @Override
@@ -158,9 +144,15 @@ public class MapItemModel implements IItemTaskModel {
         return map;
     }
 
+    private Map<Object, Object> getMapByType(String type) {
+        if (hash_map.equals(type)) return hashMap;
+        if (tree_map.equals(type)) return treeMap;
+        return new HashMap<>();
+    }
+
     private int getSize(String type) {
-       if (HASH_MAP.equals(type)) return hashMap.size();
-       if (TREE_MAP.equals(type)) return treeMap.size();
+       if (hash_map.equals(type)) return hashMap.size();
+       if (tree_map.equals(type)) return treeMap.size();
         return 0;
     }
 }
