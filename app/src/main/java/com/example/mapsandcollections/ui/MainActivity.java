@@ -6,10 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.mapsandcollections.R;
-import com.example.mapsandcollections.ui.fr.BaseContract;
+import com.example.mapsandcollections.ui.fr.ItemTasksContract;
 import com.google.android.material.tabs.TabLayout;
 
-public class MainActivity extends AppCompatActivity implements MainActivityContract.IView, BaseContract.IHost{
+public class MainActivity extends AppCompatActivity implements MainActivityContract.IView, ItemTasksContract.IHost{
 
     private ViewPager viewPager;
     private TabLayout tableLayout;
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     private void initViewPager() {
-        viewPager.setAdapter(new MyFragmentAdapter(getSupportFragmentManager()));
+        viewPager.setAdapter(new MyFragmentAdapter(this, getSupportFragmentManager()));
         tableLayout.setupWithViewPager(viewPager);
     }
 }

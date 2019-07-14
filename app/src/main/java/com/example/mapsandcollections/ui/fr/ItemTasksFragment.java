@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,22 +18,22 @@ import com.example.mapsandcollections.components.Injections;
 
 import static com.example.mapsandcollections.ui.MyFragmentAdapter.COLLECTION;
 
-public class BaseFragment extends Fragment implements BaseContract.IView, View.OnClickListener {
+public class ItemTasksFragment extends Fragment implements ItemTasksContract.IView, View.OnClickListener {
 
     private static final String EXTRA_MODEL_TYPE = "extra_model_type";
 
-    private BaseContract.IPresenter presenter;
+    private ItemTasksContract.IPresenter presenter;
     private TaskItemsRecyclerViewAdapter adapter;
     private EditText threadsView, elementsView;
     private String type;
 
-    public BaseFragment() {
+    public ItemTasksFragment() {
         this.presenter = Injections.getBaseFragmentPresenter(this);
     }
 
-    public static BaseFragment newInstance(String type) {
+    public static ItemTasksFragment newInstance(String type) {
         final Bundle args = new Bundle();
-        final BaseFragment fragment = new BaseFragment();
+        final ItemTasksFragment fragment = new ItemTasksFragment();
         args.putString(EXTRA_MODEL_TYPE, type);
         fragment.setArguments(args);
         return fragment;
@@ -64,7 +65,12 @@ public class BaseFragment extends Fragment implements BaseContract.IView, View.O
     }
 
     @Override
-    public void updateUI(int position) {
+    public void showError() {
+        Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public synchronized void updateUI(int position) {
         adapter.notifyItemChanged(position);
     }
 
@@ -72,11 +78,10 @@ public class BaseFragment extends Fragment implements BaseContract.IView, View.O
         v.findViewById(R.id.calculate_button).setOnClickListener(this);
         elementsView = v.findViewById(R.id.editText_elements);
         threadsView = v.findViewById(R.id.editText_threads);
-        final RecyclerView recyclerView = v.findViewById(R.id.recycler);
         adapter = new TaskItemsRecyclerViewAdapter(presenter.getItemTasks());
-        if (COLLECTION.equals(type))
-            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        else recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
+        final RecyclerView recyclerView = v.findViewById(R.id.recycler);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), presenter.getSpanCount(type)));
         recyclerView.addItemDecoration(new SpacesItemDecoration(8));
         recyclerView.setAdapter(adapter);
     }

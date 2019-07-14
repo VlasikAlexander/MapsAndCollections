@@ -1,8 +1,7 @@
 package com.example.mapsandcollections.components;
 
-import com.example.mapsandcollections.dto.ItemModelFactory;
-import com.example.mapsandcollections.ui.fr.BaseContract;
-import com.example.mapsandcollections.ui.fr.BasePresenter;
+import com.example.mapsandcollections.ui.fr.ItemTasksContract;
+import com.example.mapsandcollections.ui.fr.ItemTasksPresenter;
 
 public class Injections {
 
@@ -16,8 +15,8 @@ public class Injections {
         return provider;
     }
 
-    public static BaseContract.IPresenter getBaseFragmentPresenter(BaseContract.IView view) {
-        return new BasePresenter(view, provider.getTasker(), new ItemModelFactory());
+    public static ItemTasksContract.IPresenter getBaseFragmentPresenter(ItemTasksContract.IView view) {
+        return new ItemTasksPresenter(view, provider.getTasker(), provider.getItemModelFactory());
     }
 
 }

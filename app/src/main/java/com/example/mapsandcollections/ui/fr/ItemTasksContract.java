@@ -4,14 +4,17 @@ import com.example.mapsandcollections.dto.ItemTask;
 
 import java.util.List;
 
-public class BaseContract {
+public class ItemTasksContract {
 
     public interface IPresenter {
 
         void calculate(String type, String elements, String threads);
+
         List<ItemTask> getItemTasks();
 
         void setType(String type);
+
+        int getSpanCount(String type);
     }
 
     public interface IView {
@@ -19,6 +22,8 @@ public class BaseContract {
         void updateUI(int position);
 
         void setShowProgressBar();
+
+        void showError();
     }
 
     public interface IHost {

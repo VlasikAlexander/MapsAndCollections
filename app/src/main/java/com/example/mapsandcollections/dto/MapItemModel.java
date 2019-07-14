@@ -1,8 +1,10 @@
 package com.example.mapsandcollections.dto;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.example.mapsandcollections.R;
 import com.example.mapsandcollections.components.tasker.Tasker;
 
 import java.util.ArrayList;
@@ -15,23 +17,34 @@ import java.util.concurrent.Callable;
 
 public class MapItemModel implements IItemTaskModel {
 
-    private static final String HASH_MAP = "HashMap";
-    private static final String TREE_MAP = "TreeMap";
+    private String HASH_MAP;
+    private String TREE_MAP;
 
-    private static final String ADD_NEW = "Adding new";
-    private static final String REMOVE = "Removing";
-    private static final String SEARCH_BY_KEY = "Search by key";
-
+    private String ADD_NEW;
+    private String REMOVE;
+    private String SEARCH_BY_KEY;
 
     private final Handler handler;
+    private final Context context;
     private List<ItemTask> itemTaskList;
     private Map<Object, Object> hashMap;
     private Map<Object, Object> treeMap;
     private Tasker.OnTaskDoneListener listener;
 
-    MapItemModel() {
+    MapItemModel(Context context) {
         this.handler = new Handler(Looper.getMainLooper());
+        this.context = context;
+        initStrings();
         createModel();
+    }
+
+    private void initStrings() {
+        HASH_MAP = context.getString(R.string.hash_map);
+        TREE_MAP = context.getString(R.string.tree_map);
+
+        ADD_NEW = context.getString(R.string.add_new);
+        REMOVE = context.getString(R.string.remove);
+        SEARCH_BY_KEY = context.getString(R.string.search_by_key);
     }
 
     private void createModel() {
@@ -42,9 +55,7 @@ public class MapItemModel implements IItemTaskModel {
             final int int_key = random.nextInt(getSize(HASH_MAP));
             double start = System.nanoTime();
             hashMap.put(int_key, new Object());
-            itemTaskList.get(0).setShowProgressBar(false);
-            itemTaskList.get(0).setResult((System.nanoTime() - start) / 1_000_000);
-            handler.post(() -> listener.onDone(0));
+            handler.post(() -> listener.onDone(0, (System.nanoTime() - start) / 1_000_000));
             return -1D;
         }));
 
@@ -52,9 +63,7 @@ public class MapItemModel implements IItemTaskModel {
             double start = System.nanoTime();
             final int int_key = random.nextInt(getSize(TREE_MAP));
             treeMap.put(int_key, new Object());
-            itemTaskList.get(1).setShowProgressBar(false);
-            itemTaskList.get(1).setResult((System.nanoTime() - start) / 1_000_000);
-            handler.post(() -> listener.onDone(1));
+            handler.post(() -> listener.onDone(1, (System.nanoTime() - start) / 1_000_000));
             return -1D;
         }));
 
@@ -63,31 +72,24 @@ public class MapItemModel implements IItemTaskModel {
             hashMap.put(int_key, new Object());
             double start = System.nanoTime();
             hashMap.remove(int_key);
-            itemTaskList.get(2).setShowProgressBar(false);
-            itemTaskList.get(2).setResult((System.nanoTime() - start) / 1_000_000);
-            handler.post(() -> listener.onDone(2));
+            handler.post(() -> listener.onDone(2, (System.nanoTime() - start) / 1_000_000));
             return -1D;
         }));
 
         itemTaskList.add(new ItemTask(3, TREE_MAP, REMOVE, () -> {
             final int int_key = random.nextInt(getSize(TREE_MAP));
-            treeMap.put(int_key, new Object());
             double start = System.nanoTime();
             treeMap.remove(int_key);
-            itemTaskList.get(3).setShowProgressBar(false);
-            itemTaskList.get(3).setResult((System.nanoTime() - start) / 1_000_000);
-            handler.post(() -> listener.onDone(3));
+            handler.post(() -> listener.onDone(3, (System.nanoTime() - start) / 1_000_000));
             return -1D;
         }));
 
         itemTaskList.add(new ItemTask(4, HASH_MAP, SEARCH_BY_KEY, () -> {
             final int int_key = random.nextInt(getSize(HASH_MAP));
             double start = System.nanoTime();
-            for (HashMap.Entry<Object, Object> it : treeMap.entrySet()) {
+            for (HashMap.Entry<Object, Object> it : hashMap.entrySet()) {
                 if ((int) it.getKey() == int_key) {
-                    itemTaskList.get(4).setShowProgressBar(false);
-                    itemTaskList.get(4).setResult((System.nanoTime() - start) / 1_000_000);
-                    handler.post(() -> listener.onDone(4));
+                    handler.post(() -> listener.onDone(4, (System.nanoTime() - start) / 1_000_000));
                 }
             }
             return -1D;
@@ -98,9 +100,7 @@ public class MapItemModel implements IItemTaskModel {
             double start = System.nanoTime();
             for (TreeMap.Entry<Object, Object> it : treeMap.entrySet()) {
                 if ((int) it.getKey() == int_key) {
-                    itemTaskList.get(5).setShowProgressBar(false);
-                    itemTaskList.get(5).setResult((System.nanoTime() - start) / 1_000_000);
-                    handler.post(() -> listener.onDone(5));
+                    handler.post(() -> listener.onDone(5, (System.nanoTime() - start) / 1_000_000));
                 }
             }
             return -1D;
@@ -113,13 +113,14 @@ public class MapItemModel implements IItemTaskModel {
         return itemTaskList;
     }
 
-    @Override
-    public void setListener(Tasker.OnTaskDoneListener listener) {
+   private void setListener(Tasker.OnTaskDoneListener listener) {
         this.listener = listener;
     }
 
     @Override
-    public List<Callable<Double>> getTasks() {
+    public List<Callable<Double>> getTasks(String elements, Tasker.OnTaskDoneListener listener) {
+        setListener(listener);
+        createCollections(elements);
         final List<Callable<Double>> taskList = new ArrayList<>();
         for (ItemTask itemTask : getItemTasks()) {
             taskList.add(itemTask.getTask());
@@ -127,8 +128,7 @@ public class MapItemModel implements IItemTaskModel {
         return taskList;
     }
 
-    @Override
-    public void createCollections(String elements) {
+    private void createCollections(String elements) {
         hashMap = getHashMap(elements);
         treeMap = getTreeMap(elements);
     }
@@ -138,13 +138,13 @@ public class MapItemModel implements IItemTaskModel {
     }
 
     private Map<Object, Object> getHashMap(String elements) {
-        return generateMap(new HashMap<>(), elements);
+        return generateHashMap(new HashMap<>(), elements);
     }
 
-    private Map<Object, Object> generateMap(Map<Object, Object> map, String elements) {
+    private Map<Object, Object> generateHashMap(Map<Object, Object> map, String elements) {
         final int amount = Integer.parseInt(elements);
         for (int i = 0; i < amount; i++) {
-            map.put(new Object(), new Object());
+            map.put(i, new Object());
         }
         return map;
     }
@@ -159,12 +159,8 @@ public class MapItemModel implements IItemTaskModel {
     }
 
     private int getSize(String type) {
-        switch (type) {
-            case HASH_MAP:
-                return hashMap.size();
-            case TREE_MAP:
-                return treeMap.size();
-        }
+       if (HASH_MAP.equals(type)) return hashMap.size();
+       if (TREE_MAP.equals(type)) return treeMap.size();
         return 0;
     }
 }

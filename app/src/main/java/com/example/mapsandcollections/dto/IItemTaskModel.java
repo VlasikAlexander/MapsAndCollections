@@ -9,9 +9,6 @@ public interface IItemTaskModel {
 
    List<ItemTask> getItemTasks();
 
-   List<Callable<Double>> getTasks();
+   List<Callable<Double>> getTasks(String elements, Tasker.OnTaskDoneListener listener);
 
-   void createCollections(String elements);
-
-   void setListener(Tasker.OnTaskDoneListener listener);
 }

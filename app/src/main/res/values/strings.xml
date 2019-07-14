@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">MapsAndCollections</string>
+    <string name="collection">Collections</string>
+    <string name="maps">Maps</string>
+    <string name="array_list">ArrayList</string>
+    <string name="linked_list">LinkedList</string>
+    <string name="cow_list">CopyOnWriteList</string>
+    <string name="add_start">Add in the\n beginning</string>
+    <string name="add_middle" >Add in the middle</string>
+    <string name="add_end">Add in the  end</string>
+    <string name="remove_start">Remove in the  beginning</string>
+    <string name="remove_middle">Remove in the  middle</string>
+    <string name="remove_end">Remove in the  end</string>
+    <string name="serch_by_value">Search by  value</string>
+    <string name="error">Invalid value</string>
+    <string name="hash_map">HashMap</string>
+    <string name="tree_map">TreeMap</string>
+    <string name="add_new">Adding new</string>
+    <string name="remove">Removing</string>
+    <string name="search_by_key">Search by key</string>
 </resources>

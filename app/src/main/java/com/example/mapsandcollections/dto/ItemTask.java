@@ -24,7 +24,11 @@ public class ItemTask {
         return result;
     }
 
-    void setResult(double result) {
+    public int getPosition() {
+        return position;
+    }
+
+    public void setResult(double result) {
         this.result = result;
     }
 

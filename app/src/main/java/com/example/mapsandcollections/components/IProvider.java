@@ -1,10 +1,16 @@
 package com.example.mapsandcollections.components;
 
+import android.content.Context;
+
 import com.example.mapsandcollections.components.tasker.ITasker;
-import com.example.mapsandcollections.dto.IItemTaskModel;
+import com.example.mapsandcollections.dto.ItemModelFactory;
 
 public interface IProvider {
 
     ITasker getTasker();
+
+    Context getContext();
+
+    ItemModelFactory getItemModelFactory();
 
 }
