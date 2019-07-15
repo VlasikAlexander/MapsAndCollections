@@ -1,6 +1,6 @@
 package com.example.mapsandcollections.ui.fr;
 
-import com.example.mapsandcollections.dto.item.ItemTask;
+import com.example.mapsandcollections.dto.item.ItemResult;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ public class ItemTasksContract {
 
         void calculate(String type, String elements, String threads);
 
-        List<ItemTask> getItemTasks();
+        List<ItemResult> getItemTasks();
 
         void setType(String type);
 

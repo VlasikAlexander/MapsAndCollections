@@ -15,7 +15,7 @@ public class Provider implements IProvider {
     public Provider(Context context) {
         this.context = context;
         this.itemModelFactory = new ItemModelFactory(context);
-        this.tasker = new Tasker(itemModelFactory);
+        this.tasker = new Tasker();
 
     }
 

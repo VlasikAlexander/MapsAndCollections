@@ -1,8 +1,6 @@
 package com.example.mapsandcollections.dto.item;
 
-import java.util.concurrent.Callable;
-
-public class ItemTask {
+public class ItemResult {
 
     private final String type;
     private final String action;
@@ -12,7 +10,7 @@ public class ItemTask {
 
     private boolean isShowProgressBar;
 
-    ItemTask(int position, String type, String action) {
+    ItemResult(int position, String type, String action) {
         this.position = position;
         this.type = type;
         this.action = action;

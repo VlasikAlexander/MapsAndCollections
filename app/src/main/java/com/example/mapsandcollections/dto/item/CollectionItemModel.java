@@ -10,30 +10,22 @@ import java.util.List;
 public class CollectionItemModel implements IItemModel {
 
 
-    private String array_list;
+    private final String array_list;
     private String linked_list;
     private String cow_list;
 
-    private String add_start;
-    private String add_middle;
-    private String add_end;
-    private String remove_start;
-    private String remove_middle;
-    private String remove_end;
-    private String search_by_value;
-
-
-    private final Context context;
-    private List<ItemTask> itemTaskList;
+    private final String add_start;
+    private final String add_middle;
+    private final String add_end;
+    private final String remove_start;
+    private final String remove_middle;
+    private final String remove_end;
+    private final String search_by_value;
+    private List<ItemResult> itemsList;
 
 
     CollectionItemModel(Context context) {
-        this.context = context;
-        initStrings();
-        createModel();
-    }
 
-    private void initStrings() {
         array_list = context.getString(R.string.array_list);
         linked_list = context.getString(R.string.linked_list);
         cow_list = context.getString(R.string.cow_list);
@@ -44,13 +36,12 @@ public class CollectionItemModel implements IItemModel {
         remove_middle = context.getString(R.string.remove_middle);
         remove_end = context.getString(R.string.remove_end);
         search_by_value = context.getString(R.string.serch_by_value);
-
+        createModel();
     }
 
-
     @Override
-    public List<ItemTask> getItems() {
-        return itemTaskList;
+    public List<ItemResult> getItems() {
+        return itemsList;
     }
 
     @Override
@@ -61,34 +52,34 @@ public class CollectionItemModel implements IItemModel {
 
     private void createModel() {
 
-        itemTaskList = new ArrayList<>();
-        itemTaskList.add(new ItemTask(0, array_list, add_start));
-        itemTaskList.add(new ItemTask(1, linked_list, add_start));
-        itemTaskList.add(new ItemTask(2, cow_list, add_start));
+        itemsList = new ArrayList<>();
+        itemsList.add(new ItemResult(0, array_list, add_start));
+        itemsList.add(new ItemResult(1, linked_list, add_start));
+        itemsList.add(new ItemResult(2, cow_list, add_start));
 
-        itemTaskList.add(new ItemTask(3, array_list, add_middle));
-        itemTaskList.add(new ItemTask(4, linked_list, add_middle));
-        itemTaskList.add(new ItemTask(5, cow_list, add_middle));
+        itemsList.add(new ItemResult(3, array_list, add_middle));
+        itemsList.add(new ItemResult(4, linked_list, add_middle));
+        itemsList.add(new ItemResult(5, cow_list, add_middle));
 
-        itemTaskList.add(new ItemTask(6, array_list, add_end));
-        itemTaskList.add(new ItemTask(7, linked_list, add_end));
-        itemTaskList.add(new ItemTask(8, cow_list, add_end));
+        itemsList.add(new ItemResult(6, array_list, add_end));
+        itemsList.add(new ItemResult(7, linked_list, add_end));
+        itemsList.add(new ItemResult(8, cow_list, add_end));
 
-        itemTaskList.add(new ItemTask(9, array_list, remove_start));
-        itemTaskList.add(new ItemTask(10, linked_list, remove_start));
-        itemTaskList.add(new ItemTask(11, cow_list, remove_start));
+        itemsList.add(new ItemResult(9, array_list, remove_start));
+        itemsList.add(new ItemResult(10, linked_list, remove_start));
+        itemsList.add(new ItemResult(11, cow_list, remove_start));
 
-        itemTaskList.add(new ItemTask(12, array_list, remove_middle));
-        itemTaskList.add(new ItemTask(13, linked_list, remove_middle));
-        itemTaskList.add(new ItemTask(14, cow_list, remove_middle));
+        itemsList.add(new ItemResult(12, array_list, remove_middle));
+        itemsList.add(new ItemResult(13, linked_list, remove_middle));
+        itemsList.add(new ItemResult(14, cow_list, remove_middle));
 
-        itemTaskList.add(new ItemTask(15, array_list, remove_end));
-        itemTaskList.add(new ItemTask(16, linked_list, remove_end));
-        itemTaskList.add(new ItemTask(17, cow_list, remove_end));
+        itemsList.add(new ItemResult(15, array_list, remove_end));
+        itemsList.add(new ItemResult(16, linked_list, remove_end));
+        itemsList.add(new ItemResult(17, cow_list, remove_end));
 
-        itemTaskList.add(new ItemTask(18, array_list, search_by_value));
-        itemTaskList.add(new ItemTask(19, linked_list, search_by_value));
-        itemTaskList.add(new ItemTask(20, cow_list, search_by_value));
+        itemsList.add(new ItemResult(18, array_list, search_by_value));
+        itemsList.add(new ItemResult(19, linked_list, search_by_value));
+        itemsList.add(new ItemResult(20, cow_list, search_by_value));
     }
 }
 

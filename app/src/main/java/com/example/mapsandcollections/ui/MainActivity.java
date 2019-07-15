@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     private void initViewPager() {
-        viewPager.setAdapter(new MyFragmentAdapter(this, getSupportFragmentManager()));
+        viewPager.setAdapter(new MyFragmentAdapter(getSupportFragmentManager()));
         tableLayout.setupWithViewPager(viewPager);
     }
 }

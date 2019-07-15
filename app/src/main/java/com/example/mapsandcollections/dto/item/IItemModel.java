@@ -4,7 +4,10 @@ import java.util.List;
 
 public interface IItemModel {
 
-   List<ItemTask> getItems();
+      String MAP = "Maps";
+      String COLLECTION = "Collections";
+
+   List<ItemResult> getItems();
 
    int getCountSpan();
 

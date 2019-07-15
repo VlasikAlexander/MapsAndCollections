@@ -10,16 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mapsandcollections.R;
-import com.example.mapsandcollections.dto.item.ItemTask;
+import com.example.mapsandcollections.dto.item.ItemResult;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
 public class TaskItemsRecyclerViewAdapter extends RecyclerView.Adapter<TaskItemsRecyclerViewAdapter.MyViewHolder> {
 
-    private final List<ItemTask> results;
+    private final List<ItemResult> results;
 
-    TaskItemsRecyclerViewAdapter(List<ItemTask> results) {
+    TaskItemsRecyclerViewAdapter(List<ItemResult> results) {
         this.results = results;
     }
 
@@ -41,7 +41,7 @@ public class TaskItemsRecyclerViewAdapter extends RecyclerView.Adapter<TaskItems
     }
 
     void setShowProgressBar() {
-        for (ItemTask it : results) {
+        for (ItemResult it : results) {
             it.setShowProgressBar(true);
             notifyItemChanged(it.getPosition());
         }
@@ -60,18 +60,18 @@ public class TaskItemsRecyclerViewAdapter extends RecyclerView.Adapter<TaskItems
             progressBar = itemView.findViewById(R.id.progressBar);
         }
 
-        void bindItem(ItemTask itemTask) {
+        void bindItem(ItemResult itemResult) {
             final DecimalFormat decimalFormat = new DecimalFormat("0.0##");
-            if (itemTask.isShowProgressBar()) {
+            if (itemResult.isShowProgressBar()) {
                 progressBar.setVisibility(View.VISIBLE);
                 result.setVisibility(View.INVISIBLE);
             } else {
                 progressBar.setVisibility(View.INVISIBLE);
                 result.setVisibility(View.VISIBLE);
             }
-            title.setText(itemTask.getType());
-            description.setText(itemTask.getAction());
-            result.setText(String.format("%s ms", decimalFormat.format(itemTask.getResult())));
+            title.setText(itemResult.getType());
+            description.setText(itemResult.getAction());
+            result.setText(String.format("%s ms", decimalFormat.format(itemResult.getResult())));
         }
     }
 }

@@ -6,11 +6,9 @@ import com.example.mapsandcollections.components.tasker.ITasker;
 import com.example.mapsandcollections.components.tasker.Tasker;
 import com.example.mapsandcollections.dto.item.IItemModel;
 import com.example.mapsandcollections.dto.item.ItemModelFactory;
-import com.example.mapsandcollections.dto.item.ItemTask;
+import com.example.mapsandcollections.dto.item.ItemResult;
 
 import java.util.List;
-
-import static com.example.mapsandcollections.ui.MyFragmentAdapter.COLLECTION;
 
 public class ItemTasksPresenter implements ItemTasksContract.IPresenter, Tasker.OnTaskDoneListener {
 
@@ -40,9 +38,9 @@ public class ItemTasksPresenter implements ItemTasksContract.IPresenter, Tasker.
 
     @Override
     public  void onDone(int position, double time) {
-        final ItemTask itemTask = taskModel.getItems().get(position);
-        itemTask.setShowProgressBar(false);
-        itemTask.setResult(time);
+        final ItemResult itemResult = taskModel.getItems().get(position);
+        itemResult.setShowProgressBar(false);
+        itemResult.setResult(time);
         view.updateUI(position);
 
         // is this better than it was ?
@@ -52,7 +50,7 @@ public class ItemTasksPresenter implements ItemTasksContract.IPresenter, Tasker.
     }
 
     @Override
-    public List<ItemTask> getItemTasks() {
+    public List<ItemResult> getItemTasks() {
         taskModel = itemModelFactory.getItemModel(type);
         return taskModel.getItems();
     }

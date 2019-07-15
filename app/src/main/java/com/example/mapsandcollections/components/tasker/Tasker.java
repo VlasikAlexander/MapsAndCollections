@@ -1,7 +1,6 @@
 package com.example.mapsandcollections.components.tasker;
 
 
-import com.example.mapsandcollections.dto.item.ItemModelFactory;
 import com.example.mapsandcollections.dto.task.TaskModel;
 import com.example.mapsandcollections.dto.task.TaskModelFactory;
 
@@ -14,12 +13,6 @@ public class Tasker implements ITasker {
     public interface OnTaskDoneListener {
 
         void onDone(int position, double time);
-    }
-
-    private final ItemModelFactory itemModelFactory;
-
-    public Tasker(ItemModelFactory itemModelFactory) {
-        this.itemModelFactory = itemModelFactory;
     }
 
     @Override

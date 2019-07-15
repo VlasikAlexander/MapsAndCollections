@@ -2,7 +2,6 @@ package com.example.mapsandcollections.dto.item;
 
 import android.content.Context;
 
-import static com.example.mapsandcollections.ui.MyFragmentAdapter.COLLECTION;
 
 public class ItemModelFactory {
 
@@ -14,7 +13,7 @@ public class ItemModelFactory {
 
     public IItemModel getItemModel(String type) {
 
-        if (COLLECTION.equals(type)) return new CollectionItemModel(context);
+        if (IItemModel.COLLECTION.equals(type)) return new CollectionItemModel(context);
         else return new MapItemModel(context);
     }
 }
