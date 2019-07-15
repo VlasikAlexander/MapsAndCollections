@@ -1,6 +1,6 @@
 package com.example.mapsandcollections.ui.fr;
 
-import com.example.mapsandcollections.dto.ItemTask;
+import com.example.mapsandcollections.dto.item.ItemTask;
 
 import java.util.List;
 

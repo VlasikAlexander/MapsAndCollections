@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mapsandcollections.R;
-import com.example.mapsandcollections.dto.ItemTask;
+import com.example.mapsandcollections.dto.item.ItemTask;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -43,8 +43,8 @@ public class TaskItemsRecyclerViewAdapter extends RecyclerView.Adapter<TaskItems
     void setShowProgressBar() {
         for (ItemTask it : results) {
             it.setShowProgressBar(true);
+            notifyItemChanged(it.getPosition());
         }
-        notifyDataSetChanged();
     }
 
      class MyViewHolder extends RecyclerView.ViewHolder {

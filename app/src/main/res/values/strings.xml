@@ -18,4 +18,7 @@
     <string name="add_new">Adding new</string>
     <string name="remove">Removing</string>
     <string name="search_by_key">Search by key</string>
+    <string name="calculate">Calculate</string>
+    <string name="elements">Elements</string>
+    <string name="threads">Threads</string>
 </resources>

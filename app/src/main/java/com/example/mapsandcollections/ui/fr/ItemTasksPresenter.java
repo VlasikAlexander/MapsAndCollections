@@ -4,9 +4,9 @@ import android.text.TextUtils;
 
 import com.example.mapsandcollections.components.tasker.ITasker;
 import com.example.mapsandcollections.components.tasker.Tasker;
-import com.example.mapsandcollections.dto.IItemTaskModel;
-import com.example.mapsandcollections.dto.ItemModelFactory;
-import com.example.mapsandcollections.dto.ItemTask;
+import com.example.mapsandcollections.dto.item.IItemModel;
+import com.example.mapsandcollections.dto.item.ItemModelFactory;
+import com.example.mapsandcollections.dto.item.ItemTask;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class ItemTasksPresenter implements ItemTasksContract.IPresenter, Tasker.
     private final ITasker tasker;
     private final ItemTasksContract.IView view;
     private final ItemModelFactory itemModelFactory;
-    private IItemTaskModel taskModel;
+    private IItemModel taskModel;
     private String type;
 
     public ItemTasksPresenter(ItemTasksContract.IView view, ITasker tasker, ItemModelFactory itemModelFactory) {
@@ -28,6 +28,7 @@ public class ItemTasksPresenter implements ItemTasksContract.IPresenter, Tasker.
 
     @Override
     public void calculate(String type, String elements, String threads) {
+        // I use EditText with inputType = number. So I do not need to check isDigitOnly, but still have to check the case when user types 0 or a few zeros.
         if (TextUtils.isEmpty(elements) || TextUtils.isEmpty(threads) ||
                 Integer.parseInt(elements) <= 0 || Integer.parseInt(elements) <= 0) {
             view.showError();
@@ -39,15 +40,21 @@ public class ItemTasksPresenter implements ItemTasksContract.IPresenter, Tasker.
 
     @Override
     public  void onDone(int position, double time) {
-        taskModel.getItemTasks().get(position).setShowProgressBar(false);
-        taskModel.getItemTasks().get(position).setResult(time);
+        final ItemTask itemTask = taskModel.getItems().get(position);
+        itemTask.setShowProgressBar(false);
+        itemTask.setResult(time);
         view.updateUI(position);
+
+        // is this better than it was ?
+//        taskModel.getItems().get(position).setShowProgressBar(false);
+//        taskModel.getItems().get(position).setResult(time);
+//        view.updateUI(position);
     }
 
     @Override
     public List<ItemTask> getItemTasks() {
         taskModel = itemModelFactory.getItemModel(type);
-        return taskModel.getItemTasks();
+        return taskModel.getItems();
     }
 
     @Override
@@ -57,7 +64,6 @@ public class ItemTasksPresenter implements ItemTasksContract.IPresenter, Tasker.
 
     @Override
     public int getSpanCount(String type) {
-        if (COLLECTION.equals(type)) return 3;
-        else return 2;
+       return taskModel.getCountSpan();
     }
 }

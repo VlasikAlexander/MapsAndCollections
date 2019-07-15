@@ -16,8 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mapsandcollections.R;
 import com.example.mapsandcollections.components.Injections;
 
-import static com.example.mapsandcollections.ui.MyFragmentAdapter.COLLECTION;
-
 public class ItemTasksFragment extends Fragment implements ItemTasksContract.IView, View.OnClickListener {
 
     private static final String EXTRA_MODEL_TYPE = "extra_model_type";
@@ -49,7 +47,7 @@ public class ItemTasksFragment extends Fragment implements ItemTasksContract.IVi
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View v = inflater.inflate(R.layout.fragment_base, container, false);
+        final View v = inflater.inflate(R.layout.fragment_item_task, container, false);
         initViews(v);
         return v;
     }

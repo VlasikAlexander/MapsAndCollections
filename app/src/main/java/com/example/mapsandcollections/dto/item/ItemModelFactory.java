@@ -1,4 +1,4 @@
-package com.example.mapsandcollections.dto;
+package com.example.mapsandcollections.dto.item;
 
 import android.content.Context;
 
@@ -12,7 +12,7 @@ public class ItemModelFactory {
         this.context = context;
     }
 
-    public IItemTaskModel getItemModel(String type) {
+    public IItemModel getItemModel(String type) {
 
         if (COLLECTION.equals(type)) return new CollectionItemModel(context);
         else return new MapItemModel(context);

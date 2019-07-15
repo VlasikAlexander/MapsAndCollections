@@ -1,4 +1,4 @@
-package com.example.mapsandcollections.dto;
+package com.example.mapsandcollections.dto.item;
 
 import java.util.concurrent.Callable;
 
@@ -8,15 +8,15 @@ public class ItemTask {
     private final String action;
     private final int position;
     private double result;
-    private Callable<Double> task;
+
 
     private boolean isShowProgressBar;
 
-    ItemTask(int position, String type, String action, Callable<Double> task) {
+    ItemTask(int position, String type, String action) {
         this.position = position;
         this.type = type;
         this.action = action;
-        this.task = task;
+
 
     }
 
@@ -47,10 +47,5 @@ public class ItemTask {
     public void setShowProgressBar(boolean showProgressBar) {
         isShowProgressBar = showProgressBar;
     }
-
-    Callable<Double> getTask() {
-        return task;
-    }
-
 
 }
